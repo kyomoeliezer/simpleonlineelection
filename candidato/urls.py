@@ -31,7 +31,8 @@ urlpatterns=[
 
     re_path(r'^(?P<pk>[0-9]+)/chair/update', UpdateChairCandidate.as_view(), name="update_chaircandidate"),
     re_path(r'^(?P<pk>[0-9]+)/chair/delete', ChairCandidateDelete.as_view(), name="delete_chaircandidate"),
-    re_path(r'', ChairCandidates.as_view(), name="chair_candidates"),
+    re_path(r'chair-candidates', ChairCandidates.as_view(), name="chair_candidates"),
+    re_path(r'^', Dashboard.as_view(), name="dashboard"),
 
 
     ####HOOKS

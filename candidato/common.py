@@ -1,13 +1,14 @@
 import json
 import random
 import requests
+from election.settings import SMS_KEY
 import datetime
 from candidato.models import SmsSent
 
 def sms_header():
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "Basic a3lvbW86Tm9raWExMDUjJQ==",
+        "Authorization": "Basic "+SMS_KEY,
         "Accept": "application/json"
     }
     return headers

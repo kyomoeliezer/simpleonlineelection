@@ -22,6 +22,7 @@ BASE_DIR1 = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-hw+@2bn$dur&yb8_lm(nofgz(t!so0hhi3k8c)(y7fly%o*d0_'
+
 env = environ.Env()
 # reading .env file
 #environ.Env.read_env(os.path.join(BASE_DIR, ".env.dev"))
@@ -104,6 +105,7 @@ DATABASES = {
         'PASSWORD':env("POSTGRES_PASSWORD"),
     }
 }
+SMS_KEY=env("Bare")
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

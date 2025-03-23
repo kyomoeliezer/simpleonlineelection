@@ -598,3 +598,9 @@ class SmsList(View):
 class SendTestSMs(View):
     def get(self,request,*args,**kwargs):
         return HttpResponse(send_sms('0752350620','Texting from View'));
+
+class Dashboard(View):
+    template_name='dashboard/dashboard.html'
+    def get(self,request,*args,**kwargs):
+        lists=SmsSent.objects.all().order_by('-created_on')
+        return render(request,self.template_name,{'lists':lists,'header':'Sent SMS Lists'})
