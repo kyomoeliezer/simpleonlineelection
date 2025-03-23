@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+{% load crispy_forms_tags %}
+ <div class="col-lg-7 grid-margin stretch-card">
+
+                <div class="card">
+                  <div class="card-header">
+                    <div class="header"><strong>{{header|upper}}</strong></div>
+                  </div>
+                    <div class="float-right">
+
+                      <a href="{% url 'import_chair' %}" class="btn btn-primary float-right">Import</a>
+                    </div>
+                  <div class="card-body">
+
+          					<h4 class="card-title">Total Votes: 300</h4>
+          					<div class="table-responsive">
+                              <table class="table table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th style="width:10%;"> # </th>
+                                    <th style="width:20%;">MEMNO</th>
+                                    <th style="width:50%;"> CANDIDATE </th>
+          						  <th style="width:40%;">  RESULTS</th>
+                                      <th style="width:40%;">  </th>
+                                      <th style="width:40%;">  </th>
+
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                {% for li in lists %}
+                                  <tr {% if li.id == mgombea.id %} style="background-color:#93FFE8;" {% endif %}>
+                                    <td style="width:10%;"> {{forloop.counter}} </td>
+                                    <td style="width:20%;"> {{li.memberNo}}</td>
+                                    <td style="width:50%;"> {{li.candidate_name}}</td>
+          						   <td style="width:40%;">
+                                      <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                      </div>
+                                    </td>
+                                      <td><a href="{% url 'update_chaircandidate' pk=li.id %}" ><i class="fa fa-edit"></i> </a> </td>
+                                       <td><a href="javascript:;" onclick="modal_delete('{% url 'delete_chaircandidate' pk=li.id %}');"><i class="fa fa-trash text-danger"></i> </a> </td>
+
+
+                                  </tr>
+                                {% endfor %}
+
+
+
+                                </tbody>
+                              </table>
+          					</div>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="col-md-4 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="header"><strong>Jaza Mgombea</strong></div>
+                  </div>
+                  <div class="card-body">
+                    <form action="" method="post">
+                      {% csrf_token %}
+                    <div class="col-md-12">
+                        {{form.memberNo|as_crispy_field}}
+                      </div>
+                    <div class="col-md-12">
+                        {{form.candidate_name|as_crispy_field}}
+                      </div>
+                    <div class="col-12">
+                            <button type="submit" class="btn btn-primary float-right" >Save Now</button>
+                         </div>
+                    </form>
+
+                  </div>
+
+                </div>
+              </div>
+
+
+{% endblock %}

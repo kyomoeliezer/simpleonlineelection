@@ -1,0 +1,65 @@
+from django.db import models
+
+class BaseDB(models.Model):
+    is_active = models.BooleanField(default=True)
+    bywhat = models.CharField(max_length=300, verbose_name='ByWhat', null=True)
+    created_by = models.ForeignKey("auths.User", on_delete=models.CASCADE, null=True, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_on = models.DateTimeField(auto_now=True, null=True, blank=True)
+
+    class Meta:
+        abstract = True
+
+class ChairCandidate(BaseDB):
+    memberNo = models.CharField(max_length=300,verbose_name='Member Registration Number')
+    candidate_name = models.CharField(max_length=300,verbose_name='Candidate Name')
+
+    def __str__(self):
+        return (str(self.memberNo)+' '+self.candidate_name).upper()
+
+
+class BoardCandidate(BaseDB):
+    memberNo = models.CharField(max_length=300,verbose_name='Member Registration Number')
+    candidate_name = models.CharField(max_length=300,verbose_name='Candidate Name')
+
+    def __str__(self):
+        return (str(self.memberNo)+' '+self.candidate_name).upper()
+
+
+class CommitteeCandidate(BaseDB):
+    memberNo = models.CharField(max_length=300,verbose_name='Member Registration Number')
+    candidate_name = models.CharField(max_length=300,verbose_name='Candidate Name')
+
+    def __str__(self):
+        return (str(self.memberNo)+' '+self.candidate_name).upper()
+
+
+class CommitteeCandidate2(BaseDB):
+    memberNo = models.CharField(max_length=300,verbose_name='Member Registration Number')
+    candidate_name = models.CharField(max_length=300,verbose_name='Candidate Name')
+
+    def __str__(self):
+        return (str(self.memberNo)+' '+self.candidate_name).upper()
+
+
+class Voter(BaseDB):
+    memberNo = models.CharField(max_length=300,verbose_name='Member Reg No.')
+    name = models.CharField(max_length=300,verbose_name='Name')
+    mobile = models.CharField(max_length=300, verbose_name='Mobile')
+    mobile2 = models.CharField(max_length=300, verbose_name='Second Mobile',null=True)
+    updated_by = models.ForeignKey("auths.User",related_name='userRelatedUpdate',on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return (str(self.memberNo)+' '+self.name).upper()
+
+class SmsSent(BaseDB):
+    sms = models.TextField( verbose_name='Text')
+    mob_b4 = models.TextField(verbose_name='Mob_b4',null=True)
+    mob_aft = models.TextField(verbose_name='Mob_b4',null=True)
+    raw_sent = models.TextField(verbose_name='Sent', null=True)
+    raw_response = models.TextField(verbose_name='Sent', null=True)
+    messageId = models.TextField(verbose_name='Msg Id', null=True)
+    status = models.TextField(verbose_name='Status', null=True)
+
+    def __str__(self):
+        return (str(self.mob_b4)+' '+self.sms).upper()

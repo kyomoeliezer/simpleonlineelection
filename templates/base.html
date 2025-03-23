@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Uchaguzi</title>
+    <!-- plugins:css -->
+
+    <link rel="stylesheet" href="{% static 'assets/vendors/iconfonts/mdi/css/materialdesignicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendors/iconfonts/ionicons/dist/css/ionicons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendors/iconfonts/flag-icon-css/css/flag-icon.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendors/css/vendor.bundle.base.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/vendors/css/vendor.bundle.addons.css' %}">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <link rel="stylesheet" href="{% static 'assets/vendors/iconfonts/font-awesome/css/font-awesome.min.css' %}" />
+
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="{% static 'assets/css/shared/style.css' %}">
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="{% static 'assets/css/demo_1/style.css' %}">
+    <!-- End Layout styles -->
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}" />
+    <style>
+      .form-control {
+        display: inline-block;
+        border: 1px solid black !important;
+        height:46px !important;
+
+    }
+    </style>
+  </head>
+  <body>
+    <div class="container-scroller">
+      <!-- partial:../../partials/_navbar.html -->
+      <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+          <a class="navbar-brand brand-logo" href="">
+            Uchaguzi</a>
+          <a class="navbar-brand brand-logo-mini" href="">
+            <img src="" alt="logo" /> </a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center">
+          <ul class="navbar-nav">
+            <li class="nav-item font-weight-semibold d-none d-lg-block">Help : +255752350620</li>
+            <li class="nav-item dropdown language-dropdown">
+              <a class="nav-link dropdown-toggle px-2 d-flex align-items-center" id="LanguageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                <div class="d-inline-flex mr-0 mr-md-3">
+                  <div class="flag-icon-holder">
+                    <i class="flag-icon flag-icon-us"></i>
+                  </div>
+                </div>
+                <span class="profile-text font-weight-medium d-none d-md-block">English</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-left navbar-dropdown py-2" aria-labelledby="LanguageDropdown">
+                <a class="dropdown-item">
+                  <div class="flag-icon-holder">
+                    <i class="flag-icon flag-icon-us"></i>
+                  </div>English
+                </a>
+             
+              </div>
+            </li>
+          </ul>
+          
+          <ul class="navbar-nav ml-auto">
+ 
+            <li class="nav-item dropdown d-none d-xl-inline-block user-dropdown">
+              <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                <img class="img-xs rounded-circle" src="{% static 'assets/images/faces/user.png' %}" alt="Profile image"> </a>
+              <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                <div class="dropdown-header text-center">
+                  <img class="img-md rounded-circle" src="{% static 'assets/images/faces/user.png' %}" alt="Profile image">
+                  <p class="mb-1 mt-3 font-weight-semibold">{{request.user|upper}} </p>
+                  <p class="font-weight-light text-muted mb-0">Voter</p>
+                </div>
+   
+                <a class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
+              </div>
+            </li>
+          </ul>
+          <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+            <span class="mdi mdi-menu"></span>
+          </button>
+        </div>
+      </nav>
+      <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+        <!-- partial:../../partials/_sidebar.html -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+          <ul class="nav">
+            <li class="nav-item">
+              <a class="nav-link" href="">
+                <i class="menu-icon typcn typcn-document-text"></i>
+                <span class="menu-title">Dashboard</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'chair_candidates' %}">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">Chairman</span>
+              </a>
+            </li>
+             <li class="nav-item">
+              <a class="nav-link" href="{% url 'board_candidates' %}">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">Board Members</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'committee_candidates' %}">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">Committee Members</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'voters' %}">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">Voters</span>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'test_sms' %}">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">Testsms</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'sms' %}">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">SMS Sent</span>
+              </a>
+            </li>
+
+             <li class="nav-item">
+              <a class="nav-link" href="{% url 'mob_login_code' %}">
+                <i class="menu-icon typcn typcn-shopping-bag"></i>
+                <span class="menu-title">Login</span>
+              </a>
+            </li>
+
+
+
+
+            
+          </ul>
+        </nav>
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+     <div class="row"><!--BASE ROW -->
+			
+            {% block content %}
+
+            {% endblock content %}
+			  
+
+            </div><!--/ROW TEST -->
+          </div>
+          <!-- content-wrapper ends -->
+          <!-- partial:../../partials/_footer.html -->
+          <footer class="footer">
+            <div class="container-fluid clearfix">
+              <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © Tasaf Saccos</span>
+             
+            </div>
+          </footer>
+          <!-- partial -->
+        </div>
+        <!-- main-panel ends -->
+      </div>
+      <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+
+    <!-- plugins:js -->
+    <script src="{% static 'assets/vendors/js/vendor.bundle.base.js' %}"></script>
+    <script src="{% static 'assets/vendors/js/vendor.bundle.addons.js' %}"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page-->
+    <!-- End plugin js for this page-->
+    <!-- inject:js -->
+
+    <script src="{% static 'assets/js/shared/misc.js' %}"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="{% static 'assets/js/shared/jquery.cookie.js' %}" type="text/javascript"></script>
+    <!-- End custom js for this page-->
+  {% include 'modals.html' %}
+    {% include 'notifyME.html' %}
+    <link rel="stylesheet" type="text/css" href="{% static 'datatable/datatables.min.css' %}"/>
+
+<script type="text/javascript" src="{% static 'datatable/datatables.min.js' %}"></script>
+
+  <script type="text/javascript" src="{% static 'datatable/dataTables.buttons.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'datatable/jszip.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'datatable/pdfmake.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'datatable/vfs_fonts.js' %}"></script>
+<script type="text/javascript" src="{% static 'datatable/buttons.html5.min.js' %}"></script>
+
+    <script>
+    $(document).ready(function() {
+    $('.tbl').DataTable( {
+        dom: 'Bfrtip',
+        ordering:false,
+        paging:false,
+        buttons: ['excel']
+    } );
+} );
+</script>
+  </body>
+
+</html>

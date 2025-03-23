@@ -1,0 +1,66 @@
+import_committee.html{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+
+              <div class="col-md-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="header"><strong>{{header|upper}}</strong></div>
+                  </div>
+                  <div class="card-body">
+                    <form action="" enctype="multipart/form-data"  method="post">
+                      {% csrf_token %}
+                        {% if error %}
+                        <div class="row ">
+                            <div class="alert alert-danger">
+                                <p>{{error}}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="row">
+                             <div class="col-md-6">
+                                {{form.file|as_crispy_field}}
+                              </div>
+
+                       </div>
+
+                    <div class="row">
+                    <div class="col-6">
+                            <button type="submit" class="btn btn-primary " >IMPORT NOW</button>
+                         </div>
+                        </div>
+                    </form>
+                      <div class="row">
+                          <div class="col-md-12">
+                              <ol>
+                                  <li>Download CSV template <a class="btn btn-info" href="{% static 'import/CANDIDATE-TEMPLATE.csv' %}" download>DOWNLOAD TEMPLATE</a> </li>
+                                  <li>Add contents in the format , do not remove the header</li>
+                                  <li>Select it then import</li>
+                                </ol>
+
+                          </div>
+                      </div>
+                      <div class="row">
+                        <div class="iq-card-header d-flex justify-content-between row">
+                           <div class="iq-header-title col-12">
+                              <h4 class="card-title">IMPORT REPORT</h4>
+                           </div>
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    {{htmldata|safe}}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+
+
+{% endblock %}

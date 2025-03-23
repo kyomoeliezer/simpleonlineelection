@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+
+            <div class="col-lg-12 grid-margin stretch-card">
+
+                <div class="card">
+                  <div class="card-header">
+                    <div class="header"><strong>{{header|upper}}</strong></div>
+                    <div class="float-right">
+                      <a href="{% url 'new_voter' %}" class="btn btn-info">Andikisha</a>
+                      <a href="{% url 'import_voter' %}" class="btn btn-primary">Import</a>
+                    </div>
+                  </div>
+                  <div class="card-body">
+
+          					<h4 class="card-title">Total Voters: {{lists.count}}</h4>
+          					<div class="table-responsive">
+                              <table class="table tbl table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th > # </th>
+                                    <th >MEMNO</th>
+                                    <th > NAME </th>
+          						  <th>  MOBILE</th>
+                                      <th>  MOBILE2</th>
+                                      <th> CHAIR </th>
+                                      <th> BOARD </th>
+                                      <th> COMMITTEE </th>
+                                      <th>  </th>
+                                     <th>  </th>
+
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                {% for li in lists %}
+                                  <tr {% if li.id == mgombea.id %} style="background-color:#93FFE8;" {% endif %}>
+                                    <td style="width:10%;"> {{forloop.counter}} </td>
+                                    <td > {{li.memberNo}}</td>
+                                    <td > {{li.name}}</td>
+                                      <td > {{li.mobile}}</td>
+                                      <td >{% if li.mobile2 %} {{li.mobile2}}{% endif %}</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+
+                                  <td><a href="{% url 'update_voter' pk=li.id %}" ><i class="fa fa-edit"></i> </a> </td>
+                                   <td><a href="javascript:;" onclick="modal_delete('{% url 'delete_voter' pk=li.id %}');"><i class="fa fa-trash text-danger"></i> </a> </td>
+
+
+                                  </tr>
+                                {% endfor %}
+
+
+
+                                </tbody>
+                              </table>
+          					</div>
+                  </div>
+                </div>
+              </div>
+
+
+
+{% endblock %}

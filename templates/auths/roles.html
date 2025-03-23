@@ -1,0 +1,85 @@
+{% extends "common/base.html" %}
+{% load static %}
+
+{% block content %}
+<div id="content-page" class="content-page">
+<div class="container-fluid">
+<div class="row">
+<div class="col-lg-6">
+    <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
+       <div class="iq-card-header d-flex justify-content-between">
+          <div class="iq-header-title">
+             <h4 class="card-title">{{header}}</h4>
+          </div>
+          <div class="iq-card-header-toolbar d-flex align-items-center">
+             <div class="dropdown">
+                <span >
+              <a href="{% url 'auths:add-role'%}" class="btn btn-primary la la-plus-rounded">Add</a>
+                </span>
+             </div>
+          </div>
+       </div>
+       <div class="iq-card-body">
+          <div class="table-responsive">
+             <table class="table tbl mb-0">
+                <thead class="thead-light">
+                   <tr>
+                      <th scope="col">Role Name</th>
+
+                      <th scope="col">Action</th>
+                   </tr>
+                </thead>
+                <tbody>
+
+                    {% for role in page_obj %}
+                   <tr>
+                      <td>{{role.role_name}}</td>
+
+                      <td><a href="{% url 'auths:role-details' role_id=role.id %}" class="badge badge-pill badge-info"><i class="fa fa-th-large"></i>details</a></td>
+                   </tr>
+                   {% endfor %}
+                </tbody>
+             </table>
+
+          </div>
+       </div>
+    </div>
+ </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+    {% include 'common/datatable.html' %}
+  <script type="text/javascript">
+      $('.tbl').DataTable({
+      dom: 'Bfrtip',
+      ordering:false,
+      paging:false,
+buttons: [
+{
+                    text: '<i class="fa fa-plus-square-o"></i>ACTIVE',
+                    className: 'btn btn-primary btn-p',
+                     action: function (e, dt, node, config)
+                        {
+                            var url = "{% url 'auths:roles' %}";
+                          window.location=url;
+
+                        }
+                },
+
+         {
+                    text: '<i class="fa fa-plus-square-o"></i>INACTIVE',
+                    className: 'btn btn-danger btn-d',
+                     action: function (e, dt, node, config)
+                        {
+                            var url = "{% url 'auths:inactiveroles' %}";
+                          window.location=url;
+
+                        }
+                }]
+
+                });
+
+</script>
+    {% endblock %}
