@@ -18,6 +18,9 @@ from django.contrib import admin
 from django.urls import path,include
 from django.urls import path
 from candidato.models import Publishing
+from django.conf.urls.static import static
+from django.conf import settings
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 if not Publishing.objects.first():
     Publishing.objects.create()
@@ -27,6 +30,10 @@ urlpatterns = [
     path('voterlive/', include('voter.urls')),
     path('auttlogin/',include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    path('d', include('candidato.urls')),
+    path('', include('candidato.urls')),
 
 ]
+if settings.DEBUG:  # new
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += staticfiles_urlpatterns()
+
