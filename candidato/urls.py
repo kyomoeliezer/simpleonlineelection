@@ -1,5 +1,5 @@
 
-from django.urls import include, re_path,path
+from django.urls import include, re_path
 from candidato.views import *
 
 
@@ -49,7 +49,7 @@ urlpatterns=[
     re_path(r'^cpubchair', PublishUnPublishChairView.as_view(), name="pub_chair"),
 
 
-    path(r'', Dashboard.as_view(), name="dashboard"),
+    re_path(r'$', Dashboard.as_view(), name="dashboard"),
 
 
     ####HOOKS
