@@ -765,9 +765,8 @@ class SendTestSMs(View):
         dataOb.save()
         return send_sms(dataOb.mobile,'Uchaguzi OTP ni '+str(dataOb.otp_code)+'. Itumie ndani ya dakika tano.');
 
-class Dashboard(LoginRequiredMixin,View):
-    login_url = reverse_lazy('login_user')
-    redirect_field_name = 'next'
+class Dashboard(View):
+
     template_name='dashboard/dashboard.html'
     def get(self,request,*args,**kwargs):
         context={}
