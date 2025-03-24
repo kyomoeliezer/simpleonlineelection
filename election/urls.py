@@ -19,7 +19,7 @@ from django.urls import path,include
 from django.urls import path
 from candidato.models import Publishing
 from django.conf.urls.static import static
-from django.conf import settings
+from election import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 if not Publishing.objects.first():
