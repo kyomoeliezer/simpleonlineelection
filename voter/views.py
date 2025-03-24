@@ -342,7 +342,7 @@ class VotedChairView(LoginRequiredMixin,ListView):
 ###MATOKEO ##################################
 #############################################
 class MatokeoVBoard(LoginRequiredMixin,View):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
     template_name='matokeov/board_matokeo.html'
     def get(self,request,*args,**kwargs):
@@ -368,7 +368,7 @@ class MatokeoVBoard(LoginRequiredMixin,View):
         return render(request,self.template_name,context)
 
 class MatokeoVCommitte(LoginRequiredMixin,View):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
     template_name='matokeov/committee_matokeo.html'
     def get(self,request,*args,**kwargs):
@@ -393,7 +393,7 @@ class MatokeoVCommitte(LoginRequiredMixin,View):
 
         return render(request,self.template_name,context)
 class MatokeoVChair(LoginRequiredMixin,View):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
     template_name='matokeov/chair_matokeo.html'
     def get(self,request,*args,**kwargs):

@@ -437,7 +437,7 @@ class DeleteVoter(LoginRequiredMixin,DeleteView,SuccessMessageMixin):
         return reverse('voters')
 
 class ImportVoters(LoginRequiredMixin,CreateView):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
     template_name = 'import/import_voters.html'
     model = Voter
@@ -510,7 +510,7 @@ class ImportVoters(LoginRequiredMixin,CreateView):
         return render(request,self.template_name,{'form':form,'header':self.header})
 
 class ImportCommittee(LoginRequiredMixin,CreateView):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
     template_name = 'import/import_committee.html'
     model = CommitteeCandidate
@@ -568,7 +568,7 @@ class ImportCommittee(LoginRequiredMixin,CreateView):
         return render(request,self.template_name,{'form':form,'header':self.header})
 
 class ImportBoard(LoginRequiredMixin,CreateView):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
     template_name = 'import/import_board.html'
     model = BoardCandidate
@@ -626,7 +626,7 @@ class ImportBoard(LoginRequiredMixin,CreateView):
         return render(request,self.template_name,{'form':form,'header':self.header})
 
 class ImportChair(LoginRequiredMixin,CreateView):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
     template_name = 'import/import_chair.html'
     model = ChairCandidate
@@ -683,7 +683,7 @@ class ImportChair(LoginRequiredMixin,CreateView):
 
         return render(request,self.template_name,{'form':form,'header':self.header})
 class ImportViseChair(LoginRequiredMixin,CreateView):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
     template_name = 'import/import_chair.html'
     model = ViseCandidate
@@ -766,7 +766,7 @@ class SendTestSMs(View):
         return send_sms(dataOb.mobile,'Uchaguzi OTP ni '+str(dataOb.otp_code)+'. Itumie ndani ya dakika tano.');
 
 class Dashboard(LoginRequiredMixin,View):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
     template_name='dashboard/dashboard.html'
     def get(self,request,*args,**kwargs):
@@ -778,7 +778,7 @@ class Dashboard(LoginRequiredMixin,View):
         return render(request,self.template_name,context)
 
 class MatokeoBoard(LoginRequiredMixin,View):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
     template_name='matokeo/board_matokeo.html'
     def get(self,request,*args,**kwargs):
@@ -803,7 +803,7 @@ class MatokeoBoard(LoginRequiredMixin,View):
         return render(request,self.template_name,context)
 
 class MatokeoCommitte(LoginRequiredMixin,View):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
     template_name='matokeo/committee_matokeo.html'
     def get(self,request,*args,**kwargs):
@@ -827,7 +827,7 @@ class MatokeoCommitte(LoginRequiredMixin,View):
 
         return render(request,self.template_name,context)
 class MatokeoChair(LoginRequiredMixin,View):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
     template_name='matokeo/chair_matokeo.html'
     def get(self,request,*args,**kwargs):
@@ -844,7 +844,7 @@ class MatokeoChair(LoginRequiredMixin,View):
 
 
 class FlushButton(LoginRequiredMixin,View):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
     template_name='dashboard/dashboard.html'
     def get(self,request,*args,**kwargs):
@@ -861,7 +861,7 @@ class FlushButton(LoginRequiredMixin,View):
       return redirect(reverse('dashboard'))
 
 class PublishUnPublishBodiView(LoginRequiredMixin,View):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
 
     def get(self,*args,**kwargs):
@@ -877,7 +877,7 @@ class PublishUnPublishBodiView(LoginRequiredMixin,View):
         return redirect(reverse('matokeo_bodi'))
 
 class PublishUnPublishCommitteeView(LoginRequiredMixin,View):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
 
     def get(self,*args,**kwargs):
@@ -895,7 +895,7 @@ class PublishUnPublishCommitteeView(LoginRequiredMixin,View):
 
 
 class PublishUnPublishChairView(LoginRequiredMixin,View):
-    login_url = reverse_lazy('auths:login_user')
+    login_url = reverse_lazy('login_user')
     redirect_field_name = 'next'
 
     def get(self,*args,**kwargs):
