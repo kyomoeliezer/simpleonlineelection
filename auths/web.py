@@ -720,7 +720,7 @@ class LoginCode(View):
                 user= User.objects.filter(username__iexact=code).first()
                 #url=reverse_lazy('mob_auth_code')+'?code='+str(code)
                 if 'demouser' in user.username:
-                    login(user)
+                    login(request,user)
                     return redirect(reverse('dashboard'))
                 if user.mobile:
                     mocodeshort=(user.mobile)[-4:]
