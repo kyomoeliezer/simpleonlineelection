@@ -30,9 +30,9 @@ environ.Env.read_env(os.path.join(BASE_DIR, "._demo_env.dev"))
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['158.220.90.202','chaguaviongozi.com','127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
