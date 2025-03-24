@@ -30,7 +30,7 @@ urlpatterns = [
     path('voterlive/', include('voter.urls')),
     path('auttlogin/',include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    path('w', include('candidato.urls')),
+    path('', include('candidato.urls')),
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
