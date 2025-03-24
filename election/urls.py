@@ -32,8 +32,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('candidato.urls')),
 
-]
-if settings.DEBUG:  # new
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += staticfiles_urlpatterns()
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
