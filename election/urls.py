@@ -19,6 +19,8 @@ from django.urls import path,include
 from django.urls import path
 from candidato.models import Publishing
 
+if not Publishing.objects.first():
+    Publishing.objects.create()
 
 urlpatterns = [
     path("auths", include("auths.urls")),
