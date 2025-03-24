@@ -72,3 +72,10 @@ class SmsSent(BaseDB):
 
     def __str__(self):
         return (str(self.mob_b4)+' '+self.sms).upper()
+
+class Publishing(BaseDB):
+    publish_board_result = models.BooleanField(default=False)
+    publish_committee_result = models.BooleanField(default=False)
+    publish_chair_result = models.BooleanField(default=False)
+    def __str__(self):
+        return self.publish_board_result

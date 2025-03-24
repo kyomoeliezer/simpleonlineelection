@@ -17,11 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from django.urls import path
+from candidato.models import Publishing
+
+if not Publishing.objects.first():
+    Publishing.objects.create()
 
 urlpatterns = [
     path("auths", include("auths.urls")),
 
-    path('voterlive', include('voter.urls')),
+    path('voterlive/', include('voter.urls')),
     path('auttlogin/',include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('', include('candidato.urls')),

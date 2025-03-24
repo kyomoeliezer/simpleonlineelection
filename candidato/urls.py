@@ -40,6 +40,15 @@ urlpatterns=[
     re_path(r'^flushbtn', FlushButton.as_view(), name="flush"),
 
 
+    re_path(r'^matokeo-bodi', MatokeoBoard.as_view(), name="matokeo_bodi"),
+    re_path(r'^matokeo-kamati', MatokeoCommitte.as_view(), name="matokeo_kamati"),
+    re_path(r'^chair-matokeo', MatokeoChair.as_view(), name="matokeo_chair"),
+
+    re_path(r'^pubbodi', PublishUnPublishBodiView.as_view(), name="pub_bodi"),
+    re_path(r'^pubkamati', PublishUnPublishCommitteeView.as_view(), name="pub_kamati"),
+    re_path(r'^cpubchair', PublishUnPublishChairView.as_view(), name="pub_chair"),
+
+
     re_path(r'^', Dashboard.as_view(), name="dashboard"),
 
 

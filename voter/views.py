@@ -50,8 +50,14 @@ class Votings(LoginRequiredMixin,View):
     login_url = reverse_lazy('login_user')
     template_name='dashboard_voter.html'
     def get(self,request,*args,**kwargs):
+        context={}
+        context['pub']=Publishing.objects.first()
+        context['voter']=voter=Voter.objects.filter(user_id=request.user.id).first()
+        context['board']=BoardVote.objects.filter(voter_id=voter.id).exists()
+        context['committee'] = CommittteeVote.objects.filter(voter_id=voter.id).exists()
+        context['chair'] = ChairVote.objects.filter(voter_id=voter.id).exists()
         lists=SmsSent.objects.all().order_by('-created_on')
-        return render(request,self.template_name,{'lists':lists,'header':'Sent SMS Lists'})
+        return render(request,self.template_name,context)
 
 class BoardVoteView(LoginRequiredMixin,CreateView):
     model = Voter
@@ -265,7 +271,7 @@ class NewChairViseVotingView(LoginRequiredMixin,CreateView):
     redirect_field_name = 'next'
     login_url = reverse_lazy('login_user')
     template_name = 'voter/chagua_chair.html'
-    form_class=ChaguaCommitteForm
+    form_class=ChaguaChairForm
     success_url = reverse_lazy('voting')
     header='Chagua Mwenyekiti na Makamu'
 
@@ -295,6 +301,7 @@ class NewChairViseVotingView(LoginRequiredMixin,CreateView):
                 ChairVote.objects.create(
                     vise_id=vise,
                     chair_id=chair,
+                    voter_id=voter.id,
                     created_by_id=request.user.id
                 )
                 if ChairVote.objects.filter(voter_id=voter.id).count() == 1:
@@ -325,6 +332,79 @@ class VotedChairView(LoginRequiredMixin,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context['voter'] = voter=Voter.objects.filter(user_id=self.request.user.id).first()
-        context['board'] = ChairVote.objects.filter(voter_id=voter.id).all()
+        context['chair'] = ChairVote.objects.filter(voter_id=voter.id).all()
         context['voter'] = Voter.objects.filter(user_id=self.request.user.id).first()
         return context
+
+
+
+#############################################
+###MATOKEO ##################################
+#############################################
+class MatokeoVBoard(LoginRequiredMixin,View):
+    login_url = reverse_lazy('auths:login_user')
+    redirect_field_name = 'next'
+    template_name='matokeov/board_matokeo.html'
+    def get(self,request,*args,**kwargs):
+        context={}
+        context['pub'] = Publishing.objects.first()
+        context['boardAll']=BoardVote.objects.aggregate(countT=Count('voter_id',distinct=True))['countT']
+
+        context['board']=BoardCandidate.objects.values(
+            'memberNo',
+            candidateName=F('candidate_name'),
+
+
+        ).annotate(
+            votes=Sum(
+            Case(
+                When(Q(boardvote__isnull=False), then=1),
+                default=Value(0),
+                output_field=IntegerField(),
+            )
+        ),
+        ).order_by('-votes','candidateName')
+
+        return render(request,self.template_name,context)
+
+class MatokeoVCommitte(LoginRequiredMixin,View):
+    login_url = reverse_lazy('auths:login_user')
+    redirect_field_name = 'next'
+    template_name='matokeov/committee_matokeo.html'
+    def get(self,request,*args,**kwargs):
+        context={}
+        context['pub'] = Publishing.objects.first()
+        context['committeeAll']=CommittteeVote.objects.aggregate(countT=Count('voter_id',distinct=True))['countT']
+
+        context['committee']=CommitteeCandidate.objects.values(
+            'memberNo',
+            candidateName=F('candidate_name'),
+
+
+        ).annotate(
+            votes=Sum(
+            Case(
+                When(Q(committteevote__isnull=False), then=1),
+                default=Value(0),
+                output_field=IntegerField(),
+            )
+        ),
+        ).order_by('-votes','candidateName')
+
+        return render(request,self.template_name,context)
+class MatokeoVChair(LoginRequiredMixin,View):
+    login_url = reverse_lazy('auths:login_user')
+    redirect_field_name = 'next'
+    template_name='matokeov/chair_matokeo.html'
+    def get(self,request,*args,**kwargs):
+        context = {}
+        context['chairCount'] = ChairVote.objects.filter(chair_id__isnull=False).count()
+        context['viseCount'] = ChairVote.objects.filter(vise_id__isnull=False).count()
+
+        context['chairs'] = ChairCandidate.objects.all()
+        context['vise'] = ViseCandidate.objects.all()
+        return render(request, self.template_name, context)
+
+############################################
+####END MATOKEO#############################
+###########################################

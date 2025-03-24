@@ -41,8 +41,7 @@
         <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
           <a class="navbar-brand brand-logo" href="">
             Uchaguzi</a>
-          <a class="navbar-brand brand-logo-mini" href="">
-            <img src="" alt="logo" /> </a>
+
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-center">
           <ul class="navbar-nav">
@@ -78,7 +77,7 @@
                   <p class="mb-1 mt-3 font-weight-semibold">{{request.user|upper}} </p>
                   <p class="font-weight-light text-muted mb-0">Voter</p>
                 </div>
-   
+                {% if 'msimamizi' in request.user.role.role_name  %}<a href="{% url 'dashboard' %}" class="dropdown-item">Usimamizi<i class="dropdown-item-icon ti-power-off"></i></a>{% endif %}
                 <a href="{% url 'logout_user' %}" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
               </div>
             </li>
@@ -100,16 +99,12 @@
               </a>
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'chair_candidates' %}">
+
+
+             <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">
                 <i class="menu-icon typcn typcn-shopping-bag"></i>
-                <span class="menu-title">Results</span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'dashboard' %}">
-                <i class="menu-icon typcn typcn-shopping-bag"></i>
-                <span class="menu-title">Home</span>
+                <span class="menu-title">Logout</span>
               </a>
             </li>
 
@@ -175,6 +170,15 @@
         ordering:false,
         paging:false,
         buttons: ['excel']
+    } );
+} );
+</script>
+    <script>
+    $(document).ready(function() {
+    $('.tblorder').DataTable( {
+
+        order: [[2, 'desc']],
+        paging:false
     } );
 } );
 </script>

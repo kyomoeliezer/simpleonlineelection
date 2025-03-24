@@ -765,7 +765,9 @@ class SendTestSMs(View):
         dataOb.save()
         return send_sms(dataOb.mobile,'Uchaguzi OTP ni '+str(dataOb.otp_code)+'. Itumie ndani ya dakika tano.');
 
-class Dashboard(View):
+class Dashboard(LoginRequiredMixin,View):
+    login_url = reverse_lazy('auths:login_user')
+    redirect_field_name = 'next'
     template_name='dashboard/dashboard.html'
     def get(self,request,*args,**kwargs):
         context={}
@@ -775,7 +777,75 @@ class Dashboard(View):
 
         return render(request,self.template_name,context)
 
-class FlushButton(View):
+class MatokeoBoard(LoginRequiredMixin,View):
+    login_url = reverse_lazy('auths:login_user')
+    redirect_field_name = 'next'
+    template_name='matokeo/board_matokeo.html'
+    def get(self,request,*args,**kwargs):
+        context={}
+        context['boardAll']=BoardVote.objects.aggregate(countT=Count('voter_id',distinct=True))['countT']
+
+        context['board']=BoardCandidate.objects.values(
+            'memberNo',
+            candidateName=F('candidate_name'),
+
+
+        ).annotate(
+            votes=Sum(
+            Case(
+                When(Q(boardvote__isnull=False), then=1),
+                default=Value(0),
+                output_field=IntegerField(),
+            )
+        ),
+        ).order_by('-votes','candidateName')
+
+        return render(request,self.template_name,context)
+
+class MatokeoCommitte(LoginRequiredMixin,View):
+    login_url = reverse_lazy('auths:login_user')
+    redirect_field_name = 'next'
+    template_name='matokeo/committee_matokeo.html'
+    def get(self,request,*args,**kwargs):
+        context={}
+        context['committeeAll']=CommittteeVote.objects.aggregate(countT=Count('voter_id',distinct=True))['countT']
+
+        context['committee']=CommitteeCandidate.objects.values(
+            'memberNo',
+            candidateName=F('candidate_name'),
+
+
+        ).annotate(
+            votes=Sum(
+            Case(
+                When(Q(committteevote__isnull=False), then=1),
+                default=Value(0),
+                output_field=IntegerField(),
+            )
+        ),
+        ).order_by('-votes','candidateName')
+
+        return render(request,self.template_name,context)
+class MatokeoChair(LoginRequiredMixin,View):
+    login_url = reverse_lazy('auths:login_user')
+    redirect_field_name = 'next'
+    template_name='matokeo/chair_matokeo.html'
+    def get(self,request,*args,**kwargs):
+        context={}
+        context['chairCount'] = ChairVote.objects.filter(chair_id__isnull=False).count()
+        context['viseCount'] = ChairVote.objects.filter(vise_id__isnull=False).count()
+
+        context['chairs']=ChairCandidate.objects.all()
+        context['vise'] = ViseCandidate.objects.all()
+
+        return render(request,self.template_name,context)
+
+
+
+
+class FlushButton(LoginRequiredMixin,View):
+    login_url = reverse_lazy('auths:login_user')
+    redirect_field_name = 'next'
     template_name='dashboard/dashboard.html'
     def get(self,request,*args,**kwargs):
       BoardVote.objects.all().delete()
@@ -788,8 +858,57 @@ class FlushButton(View):
           User.objects.filter(id=v.user_id).delete()
       Voter.objects.all().delete()
 
-
-
-
-
       return redirect(reverse('dashboard'))
+
+class PublishUnPublishBodiView(LoginRequiredMixin,View):
+    login_url = reverse_lazy('auths:login_user')
+    redirect_field_name = 'next'
+
+    def get(self,*args,**kwargs):
+        pub=Publishing.objects.first()
+        if not pub:
+            pub=Publishing.objects.create()
+        if pub.publish_board_result:
+            pub.publish_board_result=False
+        else:
+            pub.publish_board_result=True
+        pub.save()
+        #return HttpResponse(pub.publish_board_result)
+        return redirect(reverse('matokeo_bodi'))
+
+class PublishUnPublishCommitteeView(LoginRequiredMixin,View):
+    login_url = reverse_lazy('auths:login_user')
+    redirect_field_name = 'next'
+
+    def get(self,*args,**kwargs):
+        pub=Publishing.objects.first()
+        if not pub:
+            pub=Publishing.objects.create()
+
+        if pub.publish_committee_result:
+            pub.publish_committee_result=False
+        else:
+            pub.publish_committee_result=True
+
+        pub.save()
+        return redirect(reverse('matokeo_kamati'))
+
+
+class PublishUnPublishChairView(LoginRequiredMixin,View):
+    login_url = reverse_lazy('auths:login_user')
+    redirect_field_name = 'next'
+
+    def get(self,*args,**kwargs):
+        pub=Publishing.objects.first()
+        if not pub:
+            pub=Publishing.objects.create()
+        if pub.publish_chair_result:
+            pub.publish_chair_result = False
+        else:
+            pub.publish_chair_result = True
+
+        pub.save()
+
+        return redirect(reverse('matokeo_chair'))
+
+

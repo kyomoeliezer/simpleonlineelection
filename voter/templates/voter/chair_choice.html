@@ -11,7 +11,7 @@
                       <a href="{% url 'voting' %}" class="btn btn-primary float-left">BACK</a>
                     </div>
                      <div class="float-right">
-                      <a href="{% url 'chagua_kamati' %}" class="btn btn-info float-left">BADILISHA </a>
+                      <a href="{% url 'chagua_mwenyeviti' %}" class="btn btn-info float-left">BADILISHA </a>
                     </div>
                      <br/>
                      <br/>
@@ -20,14 +20,22 @@
 
                   </div>
                       <div class="card-body">
-                        <h4 class="card-title mb-0 text-info"><strong>MACHAGUO YA KAMATI</strong></h4>
+                        <h4 class="card-title mb-0 text-info"><strong>MACHAGUO YA UWENYEKITI</strong></h4>
                         <hr style="color:black;">
-                        {% for bd in board %}
+                        {% for bd in chair %}
                         <div class="d-flex mt-3 py-2 border-bottom">
-                          <span class="img-sm rounded-circle bg-info text-white text-avatar">0{{forloop.counter}}</span>
+                          <button type="button" class="btn btn-outline-primary">CHAIR</button>
                           <div class="wrapper ml-2">
-                            <p class="mb-n1 font-weight-semibold">{{bd.candidate.candidate_name|upper}}</p>
-                            <small>{{bd.candidate.memberNo|upper}}</small>
+                            <p class="mb-n1 font-weight-semibold">{{bd.chair.candidate_name|upper}}</p>
+                            <small>{{bd.chair.memberNo|upper}}</small>
+                          </div>
+
+                        </div>
+                           <div class="d-flex mt-3 py-2 border-bottom">
+                          <button type="button" class="btn btn-outline-info">VISE</button>
+                          <div class="wrapper ml-2">
+                            <p class="mb-n1 font-weight-semibold">{{bd.vise.candidate_name|upper}}</p>
+                            <small>{{bd.vise.memberNo|upper}}</small>
                           </div>
 
                         </div>

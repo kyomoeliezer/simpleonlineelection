@@ -1,0 +1,69 @@
+{% extends "base_voter.html" %}
+{% load static %}
+{% load humanize %}
+{% load tags %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="col-md-10 grid-margin">
+                    <div class="card">
+                   <div class="card-header">
+                     <div class="float-left">
+                      <a href="{% url 'voting' %}" class="btn btn-primary float-left">BACK</a>
+                    </div>
+
+                     <br/>
+                     <br/>
+                    <div class="header"><strong>MATOKEO YA UCHAGUZI WA WAJUMBE WA BODI</strong></div>
+
+
+                  </div>
+                      <div class="card-body">
+                        <h4 class="card-title mb-0 text-info"><strong>Jumla ya Wapiga Kura {{boardAll}} </strong></h4>
+                        <hr style="color:black;">
+                          <table class="table table-bordered tbl">
+                                <thead>
+                                  <tr>
+                                    <th style="width:10%;"> # </th>
+                                    <th style="width:20%;">MEMNO</th>
+                                    <th style="width:40%;"> CANDIDATE </th>
+          						  <th style="width:15%;">  RESULTS</th>
+                                      <th style="width:40%;">  </th>
+
+
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                {% for li in board %}
+                                 {% percentage li.votes boardAll 7 as perce %}
+
+                                  <tr>
+                                    <td style="width:10%;"> <span class="img-sm rounded-circle bg-{% if forloop.counter <= 7 %}success{% else %}secondary {% endif %} text-white text-avatar">0{{forloop.counter}}</span></td>
+                                    <td style="width:20%;"> {{li.memberNo}}</td>
+                                    <td style="width:40%;"> {{li.candidateName}}</td>
+                                      <td style="text-align:center;">{{li.votes}}</td>
+          						   <td style="width:40%;">
+                                      <div class="progress">
+                                        <div class="progress-bar bg-{% if forloop.counter <= 7 %}success{% else %}secondary {% endif %}" role="progressbar" style="width: {{perce}}%" aria-valuenow="{{perce}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                      </div>
+                                    </td>
+
+                                  </tr>
+                                {% endfor %}
+
+
+
+                                </tbody>
+                              </table>
+
+
+                      </div>
+                    </div>
+
+
+{% endblock %}
+
+
+
+
+

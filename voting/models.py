@@ -19,8 +19,8 @@ class CommittteeVote(BaseDB):
 
 
 class ChairVote(BaseDB):
-    chair_candidate=models.ForeignKey(CommitteeCandidate, on_delete=models.CASCADE)
-    vise_candidate = models.ForeignKey(ViseCandidate, on_delete=models.CASCADE)
+    chair=models.ForeignKey(ChairCandidate, on_delete=models.CASCADE)
+    vise = models.ForeignKey(ViseCandidate, on_delete=models.CASCADE)
     voter = models.ForeignKey(Voter, on_delete=models.CASCADE)
     is_voted=models.BooleanField(default=True)
 

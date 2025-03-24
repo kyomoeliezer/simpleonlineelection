@@ -14,6 +14,13 @@ urlpatterns=[
     re_path(r'^wenyeviti-wako', VotedChairView.as_view(), name="wenyeviti_wako"),
 
 
+    #####CHAGUA
+    re_path(r'^matokeo-sion-bodi', MatokeoVBoard.as_view(), name="matokeo_voter_bodi"),
+    re_path(r'^kamati-ya-uchaguzi-matokeo', MatokeoVCommitte.as_view(), name="matokeo_voter_kamati"),
+    re_path(r'^mwenyekiti-wa-chama', MatokeoVChair.as_view(), name="matokeo_voter_mwenyekiti"),
+
+
+
     re_path(r'^', Votings.as_view(), name="voting"),
 
 

@@ -1,26 +1,36 @@
 {% extends "base_voter.html" %}
 {% load static %}
 {% load humanize %}
+{% load tags %}
 {% block content %}
 {% load crispy_forms_tags %}
+{% published as pub %}
 
+    <div class="col-md-12 " style="padding:30px;">
 
-    <div class="col-md-5 grid-margin stretch-card">
+            <div class="header">
+                <h3>{{voter.memberNo}}-{{voter.name|upper}}</h3>
+            </div>
+
+    </div>
+
+    <div class="col-md-6 grid-margin stretch-card">
+
     <div class="card">
       <div class="card-body">
         <div class="row">
           <div class="col-md-8">
                 <div class="d-flex align-items-center pb-2">
                   <div class="bg-danger mr-2"></div>
-                  <h3 class="mb-0">WAJUMBE WA BODI</h3>
+                  <h3 class="mb-0">{% if pub.publish_board_result %}<i class="fa fa-check text-success"></i>{% endif %} WAJUMBE WA BODI</h3>
 
                 </div>
 
           </div>
-            <div class="col-md-4  align-middle" style="background-color:#e5e5e5;">
-                <a href="{% url 'chagua_bodi' %}" ><button class="btn btn-primary col-md-12  align-middle">CHAGUA</button></a>
-                <a href="{% url 'bodi_yako' %}" ><button class="btn btn-warning col-md-12  align-middle">VIEW</button></a>
-
+            <div class="col-md-4  align-middle" >
+                {% if not board %} <a href="{% url 'chagua_bodi' %}" ><button class="btn btn-primary col-md-12  align-middle">CHAGUA</button></a>
+               {% else %} {% if pub.publish_board_result %}<a href="{% url 'matokeo_voter_bodi' %}"><button type="button" class="btn btn-outline-primary">MATOKEO</button> </a> {% else %} <a href="{% url 'bodi_yako' %}" ><button class="btn btn-warning col-md-12  align-middle">VIEW</button></a>
+                {% endif %} {% endif %}
             </div>
 
 
@@ -28,23 +38,23 @@
       </div>
     </div>
  </div>
-<div class="col-md-5 grid-margin stretch-card">
+<div class="col-md-6 grid-margin stretch-card">
     <div class="card">
       <div class="card-body">
         <div class="row">
           <div class="col-md-8">
                 <div class="d-flex align-items-center pb-2">
                   <div class="bg-danger mr-2"></div>
-                  <h3 class="mb-0">KAMATI YA USIMAMIZI</h3>
+                  <h3 class="mb-0">{% if pub.publish_committee_result %}<i class="fa fa-check text-success"></i>{% endif %}KAMATI YA USIMAMIZI</h3>
                     <br/>
                     <br/>
                 </div>
 
           </div>
-           <div class="col-md-4  align-middle" style="background-color:#e5e5e5;">
-                <a href="{% url 'chagua_kamati' %}" ><button class="btn btn-primary col-md-12  align-middle">CHAGUA</button></a>
-                <a href="{% url 'kamati_yako' %}" ><button class="btn btn-warning col-md-12  align-middle">VIEW</button></a>
-
+           <div class="col-md-4  align-middle" >
+               {% if not committee %} <a href="{% url 'chagua_kamati' %}" ><button class="btn btn-primary col-md-12  align-middle">CHAGUA</button></a>
+               {% else %} {% if pub.publish_committee_result %} <a href="{% url 'matokeo_voter_kamati' %}"> <button type="button" class="btn btn-outline-warning">MATOKEO</button></a> {% else %}<a href="{% url 'kamati_yako' %}" ><button class="btn btn-primary col-md-12  align-middle">VIEW</button></a>
+                {% endif %}{% endif %}
             </div>
 
 
@@ -53,23 +63,23 @@
     </div>
  </div>
 <div class="col-md-12"><br/></div>
-<div class="col-md-5 grid-margin stretch-card">
+<div class="col-md-6 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <div class="row">
               <div class="col-md-8">
                     <div class="d-flex align-items-center pb-2">
                       <div class="bg-danger mr-2"></div>
-                      <h3 class="mb-0">CHAIR/VISE </h3>
+                      <h3 class="mb-0">{% if pub.publish_chair_result %}<i class="fa fa-check text-success"></i>{% endif %}CHAIR/VISE </h3>
                         <br/>
                         <br/>
                     </div>
 
               </div>
-                <div class="col-md-4  align-middle" style="background-color:#e5e5e5;">
-                <a href="{% url 'chagua_mwenyeviti' %}" ><button class="btn btn-primary col-md-12  align-middle">CHAGUA</button></a>
-                <a href="{% url 'wenyeviti_wako' %}" ><button class="btn btn-info col-md-12  align-middle">VIEW</button></a>
-
+                <div class="col-md-4  align-middle" >
+              {% if not chair %}  <a href="{% url 'chagua_mwenyeviti' %}" ><button class="btn btn-primary col-md-12  align-middle">CHAGUA</button></a>
+              {% else %} {% if pub.publish_chair_result %}  <a href="{% url 'matokeo_voter_mwenyekiti' %}"> <button type="button" class="btn btn-outline-info">MATOKEO</button></a>{% else %} <a href="{% url 'wenyeviti_wako' %}" ><button class="btn btn-info col-md-12  align-middle">VIEW</button></a>
+               {% endif %} {% endif %}
             </div>
 
 

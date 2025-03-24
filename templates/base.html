@@ -42,8 +42,7 @@
         <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
           <a class="navbar-brand brand-logo" href="">
             Uchaguzi</a>
-          <a class="navbar-brand brand-logo-mini" href="">
-            <img src="" alt="logo" /> </a>
+
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-center">
           <ul class="navbar-nav">
@@ -79,7 +78,7 @@
                   <p class="mb-1 mt-3 font-weight-semibold">{{request.user.username|upper}} {% if request.user.name %}-{{request.user.name|upper}}{% endif %} </p>
                   <p class="font-weight-light text-muted mb-0">{% if request.user.role %}{{request.user.name }}{% endif %}</p>
                 </div>
-   
+                 {% if 'msimamizi' in request.user.role.role_name  %}<a href="{% url 'dashboard' %}" class="dropdown-item">Piga Kura Yako<i class="dropdown-item-icon ti-power-off"></i></a>{% endif %}
                 <a href="{% url 'logout_user' %}" class="dropdown-item">Sign Out<i class="dropdown-item-icon ti-power-off"></i></a>
               </div>
             </li>
@@ -104,25 +103,25 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'chair_candidates' %}">
                 <i class="menu-icon typcn typcn-shopping-bag"></i>
-                <span class="menu-title">Chair</span>
+                <span class="menu-title">Chair Candidates</span>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'vise_candidates' %}">
                 <i class="menu-icon typcn typcn-shopping-bag"></i>
-                <span class="menu-title">Vise Chair</span>
+                <span class="menu-title">Vise Chair Candidates</span>
               </a>
             </li>
              <li class="nav-item">
               <a class="nav-link" href="{% url 'board_candidates' %}">
                 <i class="menu-icon typcn typcn-shopping-bag"></i>
-                <span class="menu-title">Board Members</span>
+                <span class="menu-title">Board Candidates</span>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'committee_candidates' %}">
                 <i class="menu-icon typcn typcn-shopping-bag"></i>
-                <span class="menu-title">Committee Members</span>
+                <span class="menu-title">Committee Candidates</span>
               </a>
             </li>
             <li class="nav-item">
@@ -132,24 +131,14 @@
               </a>
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'test_sms' %}">
-                <i class="menu-icon typcn typcn-shopping-bag"></i>
-                <span class="menu-title">Testsms</span>
-              </a>
-            </li>
+
             <li class="nav-item">
               <a class="nav-link" href="{% url 'sms' %}">
                 <i class="menu-icon typcn typcn-shopping-bag"></i>
                 <span class="menu-title">SMS Sent</span>
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'voting' %}">
-                <i class="menu-icon typcn typcn-shopping-bag"></i>
-                <span class="menu-title">Voter</span>
-              </a>
-            </li>
+
              <li class="nav-item">
               <a class="nav-link" href="{% url 'staff-members' %}">
                 <i class="menu-icon typcn typcn-shopping-bag"></i>
@@ -164,17 +153,11 @@
             </li>
 
 
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'flush' %}">
-                <i class="menu-icon typcn typcn-shopping-bag"></i>
-                <span class="menu-title">Flush</span>
-              </a>
-            </li>
 
              <li class="nav-item">
-              <a class="nav-link" href="{% url 'mob_login_code' %}">
+              <a class="nav-link" href="{% url 'logout' %}">
                 <i class="menu-icon typcn typcn-shopping-bag"></i>
-                <span class="menu-title">Login</span>
+                <span class="menu-title">Logout</span>
               </a>
             </li>
 
@@ -242,6 +225,16 @@
     $('.tbl').DataTable( {
         dom: 'Bfrtip',
         ordering:false,
+        paging:false,
+        buttons: ['excel']
+    } );
+} );
+</script>
+  <script>
+    $(document).ready(function() {
+    $('.tblorder').DataTable( {
+        dom: 'Bfrtip',
+        order: [[2, 'desc']],
         paging:false,
         buttons: ['excel']
     } );

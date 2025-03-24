@@ -28,7 +28,7 @@ class ChaguaCommitteForm(forms.ModelForm):
         model=BoardVote
         fields=['is_voted']
 
-class ChaguaCommitteForm(forms.ModelForm):
+class ChaguaChairForm(forms.ModelForm):
     is_voted=forms.BooleanField(required=False)
     chair=forms.ModelChoiceField(queryset=ChairCandidate.objects.order_by('candidate_name'),label='Mwenyekiti wa Chama',widget=forms.Select(attrs={'class': 'form-control bod1'}))
     vise = forms.ModelChoiceField(queryset=ViseCandidate.objects.order_by('candidate_name'),label='Makamu Mwenyekiti ',widget=forms.Select(attrs={'class': 'form-control bod2'}))
