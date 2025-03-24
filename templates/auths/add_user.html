@@ -1,10 +1,8 @@
-{% extends "common/base.html" %}
+{% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div id="content-page" class="content-page">
-   <div class="container-fluid">
-    <div class="row">
+
      <div class="col-12">
         <div class="iq-card">
             <div class="iq-card">
@@ -29,38 +27,14 @@
                   <form  action="" method="post">
                       {% csrf_token %}
                     <div class="row">
-                        <div class="form-group col-6">
-                           {{form.full_name|as_crispy_field}}
-                        </div>
-                         <div class="form-group col-6">
-                           {{form.phone_number|as_crispy_field}}
-                        </div>
-                        <div class="form-group col-6">
-                           {{form.username|as_crispy_field}}
-                        </div>
+
                         <div class="form-group col-6">
                            {{form.role|as_crispy_field}}
                         </div>
-                        <div class="form-group col-6">
-                           {{form.zone|as_crispy_field}}
-                        </div>
-                        <div class="form-group col-6">
-                           {{form.is_active|as_crispy_field}}
-                        </div>
-                        <div class="form-group col-6">
-                           {{form.is_superuser|as_crispy_field}}
-                        </div>
-                        <div class="form-group col-6">
-                           {{form.is_staff|as_crispy_field}}
-                        </div>
-                        <div class="form-group col-6">
-                           {{form.can_bypass|as_crispy_field}}
-                        </div>
 
 
 
-
-                         <div class="col-12">
+                         <div class="col-6">
                             <button type="submit" class="btn btn-primary float-right" >{% if form %} Save {% else %} Create {% endif %}</button>
                          </div>
                     </div>
@@ -69,7 +43,6 @@
              </div>
         </div>
        </div>
-       </div>
-      </dev>
+
 
 {% endblock %}

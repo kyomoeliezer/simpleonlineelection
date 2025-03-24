@@ -8,3 +8,21 @@ class BoardVote(BaseDB):
 
     def __str__(self):
         return  self.candidate.candidate_name
+
+class CommittteeVote(BaseDB):
+    candidate=models.ForeignKey(CommitteeCandidate, on_delete=models.CASCADE)
+    voter = models.ForeignKey(Voter, on_delete=models.CASCADE)
+    is_voted=models.BooleanField(default=True)
+
+    def __str__(self):
+        return  self.candidate.candidate_name
+
+
+class ChairVote(BaseDB):
+    chair_candidate=models.ForeignKey(CommitteeCandidate, on_delete=models.CASCADE)
+    vise_candidate = models.ForeignKey(ViseCandidate, on_delete=models.CASCADE)
+    voter = models.ForeignKey(Voter, on_delete=models.CASCADE)
+    is_voted=models.BooleanField(default=True)
+
+    def __str__(self):
+        return  self.chair_candidate.candidate_name

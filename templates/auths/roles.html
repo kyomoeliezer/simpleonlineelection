@@ -1,10 +1,8 @@
-{% extends "common/base.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block content %}
-<div id="content-page" class="content-page">
-<div class="container-fluid">
-<div class="row">
+
 <div class="col-lg-6">
     <div class="iq-card iq-card-block iq-card-stretch iq-card-height">
        <div class="iq-card-header d-flex justify-content-between">
@@ -14,7 +12,7 @@
           <div class="iq-card-header-toolbar d-flex align-items-center">
              <div class="dropdown">
                 <span >
-              <a href="{% url 'auths:add-role'%}" class="btn btn-primary la la-plus-rounded">Add</a>
+              <a href="{% url 'add-role'%}" class="btn btn-primary la la-plus-rounded">Add</a>
                 </span>
              </div>
           </div>
@@ -35,7 +33,7 @@
                    <tr>
                       <td>{{role.role_name}}</td>
 
-                      <td><a href="{% url 'auths:role-details' role_id=role.id %}" class="badge badge-pill badge-info"><i class="fa fa-th-large"></i>details</a></td>
+                      <td><a href="{% url 'role-details' role_id=role.id %}" class="badge badge-pill badge-info"><i class="fa fa-th-large"></i>details</a></td>
                    </tr>
                    {% endfor %}
                 </tbody>
@@ -45,7 +43,7 @@
        </div>
     </div>
  </div>
-</div>
+
 
 {% endblock content %}
 
@@ -62,7 +60,7 @@ buttons: [
                     className: 'btn btn-primary btn-p',
                      action: function (e, dt, node, config)
                         {
-                            var url = "{% url 'auths:roles' %}";
+                            var url = "{% url 'roles' %}";
                           window.location=url;
 
                         }
@@ -73,7 +71,7 @@ buttons: [
                     className: 'btn btn-danger btn-d',
                      action: function (e, dt, node, config)
                         {
-                            var url = "{% url 'auths:inactiveroles' %}";
+                            var url = "{% url 'inactiveroles' %}";
                           window.location=url;
 
                         }

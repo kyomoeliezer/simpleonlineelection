@@ -3,6 +3,7 @@
 {% load humanize %}
 {% block content %}
 {% load crispy_forms_tags %}
+{% load tags %}
  <div class="col-lg-7 grid-margin stretch-card">
 
                 <div class="card">
@@ -15,9 +16,9 @@
                     </div>
                   <div class="card-body">
 
-          					<h4 class="card-title">Total Votes: 300</h4>
+          					<h4 class="card-title">Total Votes: {% vota %}</h4>
           					<div class="table-responsive">
-                              <table class="table table-bordered">
+                              <table class="table table-bordered tbl">
                                 <thead>
                                   <tr>
                                     <th style="width:10%;"> # </th>

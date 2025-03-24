@@ -45,7 +45,9 @@ def no_check_duplicate_choice(choice,request,no):
         return {'inafanana':'Mjumbe No.7'}
     return None
 
-class Votings(View):
+class Votings(LoginRequiredMixin,View):
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
     template_name='dashboard_voter.html'
     def get(self,request,*args,**kwargs):
         lists=SmsSent.objects.all().order_by('-created_on')
@@ -64,9 +66,12 @@ class BoardVoteView(LoginRequiredMixin,CreateView):
         context = super().get_context_data()
         context['form']=self.form_class
         context['header']=self.header
+        context['voter'] = Voter.objects.filter(user_id=self.request.user.id).first()
         return context
 
     def post(self, request, *args, **kwargs):
+        voter = Voter.objects.filter(user_id=self.request.user.id).first()
+
         form = self.form_class(request.POST)
 
         if form.is_valid():
@@ -111,9 +116,215 @@ class BoardVoteView(LoginRequiredMixin,CreateView):
                 htmlmsg = htmlmsg + '<li>Mjumbe No.7 umemchagua kwenye nafasi mbili</li>'
 
             if found:
-                return render(request,self.template_name,{'voter':'','header':self.header,'form': form, 'header': 'Chagua wajumbe wa bodi','htmlmsg':htmlmsg})
+                return render(request,self.template_name,{'voter':voter,'header':self.header,'form': form, 'header': 'Chagua wajumbe wa bodi','htmlmsg':htmlmsg})
             else:
-                return render(request, self.template_name,
-                              {'voter': '', 'header': self.header, 'form': form, 'header': 'Chagua wajumbe wa bodi', })
 
-        return render(self.request, self.template_name, {'header':self.header,'form': form, 'header': 'Wagombea'})
+                if Voter.objects.filter(user_id=request.user.id).exists():
+
+                    dataCreate=[]
+                    dataCreate.append(BoardVote(voter_id=voter.id,candidate_id=bod1,is_voted=True))
+                    dataCreate.append(BoardVote(voter_id=voter.id, candidate_id=bod2, is_voted=True))
+                    dataCreate.append(BoardVote(voter_id=voter.id, candidate_id=bod3, is_voted=True))
+                    dataCreate.append(BoardVote(voter_id=voter.id, candidate_id=bod4, is_voted=True))
+                    dataCreate.append(BoardVote(voter_id=voter.id, candidate_id=bod5, is_voted=True))
+                    dataCreate.append(BoardVote(voter_id=voter.id, candidate_id=bod6, is_voted=True))
+                    dataCreate.append(BoardVote(voter_id=voter.id, candidate_id=bod7, is_voted=True))
+
+                    if len(dataCreate) == 7:
+                        BoardVote.objects.filter(voter_id=voter.id).delete()
+                        BoardVote.objects.bulk_create(dataCreate)
+                        if BoardVote.objects.filter(voter_id=voter.id).count() == 7:
+                            messages.success(request,'Success! Umechagua taari')
+                            return redirect(reverse('bodi_yako'))
+                        else:
+                            messages.warning(request, 'Failed! Umechagua Kuna tatizo tafadhali jaribu tena')
+                            return render(request, self.template_name,
+                                          {'voter': voter, 'header': self.header, 'form': form,
+                                           'header': 'Chagua wajumbe wa bodi','htmlmsg':'Kuna tatizo jaribu tena' })
+                    else:
+                        return render(request, self.template_name,
+                                      {'voter': voter, 'header': self.header, 'form': form,
+                                       'header': 'Chagua wajumbe wa bodi', })
+
+                return render(request, self.template_name,
+                              {'voter': voter, 'header': self.header, 'form': form, 'header': 'Chagua wajumbe wa bodi', })
+
+        return render(self.request, self.template_name, {'voter':voter,'header':self.header,'form': form, 'header': 'Wagombea'})
+
+
+class VotedBoardVoteView(LoginRequiredMixin,ListView):
+    model = BoardVote
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    template_name = 'voter/board_choice.html'
+    success_url = reverse_lazy('voting')
+    header='Wajumbe Uliowachagua'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['voter'] = voter=Voter.objects.filter(user_id=self.request.user.id).first()
+        context['board'] = BoardVote.objects.filter(voter_id=voter.id).all().order_by('candidate__candidate_name')
+        context['voter'] = Voter.objects.filter(user_id=self.request.user.id).first()
+        return context
+
+
+##############CHAGUA KAMATI
+class NewCommitteeVotingView(LoginRequiredMixin,CreateView):
+    model = Voter
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    template_name = 'voter/chagua_committee.html'
+    form_class=ChaguaCommitteForm
+    success_url = reverse_lazy('voting')
+    header='Chagua wajumbe wa bodi'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['form']=self.form_class
+        context['header']=self.header
+        context['voter'] = Voter.objects.filter(user_id=self.request.user.id).first()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        voter = Voter.objects.filter(user_id=self.request.user.id).first()
+
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+
+            form1 = form.save(commit=False)
+            bod1=request.POST.get('bodi1')
+            bod2 = request.POST.get('bodi2')
+            bod3 = request.POST.get('bodi3')
+
+            htmlmsg=''
+            found=False
+            if no_check_duplicate_choice(bod1,request,1):
+                found=True
+                htmlmsg=htmlmsg+'<li>Mjumbe No.1 umemchagua kwenye nafasi mbili</li>'
+
+            if no_check_duplicate_choice(bod2, request, 2):
+                found = True
+                htmlmsg = htmlmsg + '<li>Mjumbe No.2 umemchagua kwenye nafasi mbili</li>'
+
+            if no_check_duplicate_choice(bod3, request, 3):
+                found = True
+                htmlmsg = htmlmsg + '<li>Mjumbe No.3 umemchagua kwenye nafasi mbili</li>'
+
+
+            if found:
+                return render(request,self.template_name,{'voter':voter,'header':self.header,'form': form, 'header': 'Chagua wajumbe wa bodi','htmlmsg':htmlmsg})
+            else:
+
+                if Voter.objects.filter(user_id=request.user.id).exists():
+
+                    dataCreate=[]
+                    dataCreate.append(CommittteeVote(voter_id=voter.id,candidate_id=bod1,is_voted=True))
+                    dataCreate.append(CommittteeVote(voter_id=voter.id, candidate_id=bod2, is_voted=True))
+                    dataCreate.append(CommittteeVote(voter_id=voter.id, candidate_id=bod3, is_voted=True))
+
+
+                    if len(dataCreate) == 3:
+                        CommittteeVote.objects.filter(voter_id=voter.id).delete()
+                        CommittteeVote.objects.bulk_create(dataCreate)
+                        if CommittteeVote.objects.filter(voter_id=voter.id).count() == 3:
+                            messages.success(request,'Success! Umechagua taari')
+                            return redirect(reverse('kamati_yako'))
+                        else:
+                            messages.warning(request, 'Failed!  Kuna tatizo tafadhali jaribu tena')
+                            return render(request, self.template_name,
+                                          {'voter': voter, 'header': self.header, 'form': form,
+                                           'header': 'Chagua wajumbe wa Kamati','htmlmsg':'Kuna tatizo jaribu tena' })
+                    else:
+                        return render(request, self.template_name,
+                                      {'voter': voter, 'header': self.header, 'form': form,
+                                       'header': 'Chagua wajumbe wa kamati', })
+
+                return render(request, self.template_name,
+                              {'voter': voter, 'header': self.header, 'form': form, 'header': 'Chagua wajumbe wa kamati', })
+
+        return render(self.request, self.template_name, {'voter':voter,'header':self.header,'form': form, 'header': 'Wagombea'})
+
+class VotedCommitteView(LoginRequiredMixin,ListView):
+    model = CommittteeVote
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    template_name = 'voter/committee_choice.html'
+    header='Wajumbe Kamati Uliowachagua'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['voter'] = voter=Voter.objects.filter(user_id=self.request.user.id).first()
+        context['board'] = CommittteeVote.objects.filter(voter_id=voter.id).all().order_by('candidate__candidate_name')
+        context['voter'] = Voter.objects.filter(user_id=self.request.user.id).first()
+        return context
+
+##########chagua chair and Vise Chair
+class NewChairViseVotingView(LoginRequiredMixin,CreateView):
+    model = Voter
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    template_name = 'voter/chagua_chair.html'
+    form_class=ChaguaCommitteForm
+    success_url = reverse_lazy('voting')
+    header='Chagua Mwenyekiti na Makamu'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['form']=self.form_class
+        context['header']=self.header
+        context['voter'] = Voter.objects.filter(user_id=self.request.user.id).first()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        voter = Voter.objects.filter(user_id=self.request.user.id).first()
+
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+
+            form1 = form.save(commit=False)
+            chair=request.POST.get('chair')
+            vise = request.POST.get('vise')
+
+            htmlmsg=''
+            found=False
+
+            if chair and vise:
+                ChairVote.objects.filter(voter_id=voter.id).delete()
+                ChairVote.objects.create(
+                    vise_id=vise,
+                    chair_id=chair,
+                    created_by_id=request.user.id
+                )
+                if ChairVote.objects.filter(voter_id=voter.id).count() == 1:
+                    messages.success(request, 'Success! Umechagua taari')
+                    return redirect(reverse('wenyeviti_wako'))
+                else:
+                    htmlmsg='<li>Failed! Tafadhali rudia tena , ukishindwa contact support</li>'
+                    messages.warning(request, 'Failed! Tafadhali rudia tena , ukishindwa contact support')
+                    return render(request,self.template_name,{'voter':voter,'header':self.header,'form': form, 'header': 'Chagua mwenyekiti na makamu mwenyekiti','htmlmsg':htmlmsg})
+
+            else:
+                htmlmsg = '<li>Failed! Tafadhali rudia tena , ukishindwa contact support</li>'
+                messages.warning(request, 'Failed! Tafadhali rudia tena , ukishindwa contact support')
+                return render(request, self.template_name, {'voter': voter, 'header': self.header, 'form': form,
+                                                            'header': 'Chagua mwenyekiti na makamu mwenyekiti',
+                                                            'htmlmsg': htmlmsg})
+
+
+        return render(self.request, self.template_name, {'voter':voter,'header':self.header,'form': form, 'header': 'Wagombea'})
+
+class VotedChairView(LoginRequiredMixin,ListView):
+    model = ChairVote
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    template_name = 'voter/chair_choice.html'
+    header='Chair and vise chair'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['voter'] = voter=Voter.objects.filter(user_id=self.request.user.id).first()
+        context['board'] = ChairVote.objects.filter(voter_id=voter.id).all()
+        context['voter'] = Voter.objects.filter(user_id=self.request.user.id).first()
+        return context

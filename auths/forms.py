@@ -34,15 +34,18 @@ class RoleForm(forms.ModelForm):
         return role_name
 
 class RoleEditForm(forms.ModelForm):
+    """
     perm=forms.ModelMultipleChoiceField(
         queryset=CustPermission.objects.filter(is_single=False),
         widget=forms.CheckboxSelectMultiple, required=True, label='PERMISSION LIST')
+
     perm_one_only = forms.ModelChoiceField(
         queryset=CustPermission.objects.filter(is_single=True),
         widget=forms.RadioSelect, required=False, label='Special Permission')
+    """
     class Meta:
         model = Role
-        fields = ["role_name","perm"]
+        fields = ["role_name"]
 
 
 class PermissionForm(forms.ModelForm):
@@ -68,4 +71,5 @@ class CustomAuthenticationForm(forms.Form):
     username=forms.CharField(label='MemberNo',required=True)
 
 class CustomAuthCodeForm(forms.Form):
-    auth_code=forms.CharField(label='Auth code',required=True)
+    auth_code=forms.CharField(label='Auth code',required=True,widget=forms.TextInput(attrs={'id': 'id_auth_code'}))
+    userId = forms.CharField(label='UserId', required=True, widget=forms.TextInput(attrs={'id': 'userId'}))

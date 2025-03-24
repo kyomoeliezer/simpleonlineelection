@@ -6,6 +6,14 @@ from voter.views import *
 urlpatterns=[
 
     re_path(r'^chagua-bodi', BoardVoteView.as_view(), name="chagua_bodi"),
+    re_path(r'^board-yako', VotedBoardVoteView.as_view(), name="bodi_yako"),
+    re_path(r'^chagua-kamati', NewCommitteeVotingView.as_view(), name="chagua_kamati"),
+    re_path(r'^kamati-yako', VotedCommitteView.as_view(), name="kamati_yako"),
+
+    re_path(r'^mwenyekiti-chagua', NewChairViseVotingView.as_view(), name="chagua_mwenyeviti"),
+    re_path(r'^wenyeviti-wako', VotedChairView.as_view(), name="wenyeviti_wako"),
+
+
     re_path(r'^', Votings.as_view(), name="voting"),
 
 

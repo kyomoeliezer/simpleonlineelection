@@ -1,7 +1,10 @@
+import json
 from datetime import datetime
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect,HttpResponse
 from django.urls import reverse,reverse_lazy
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from datetime import datetime
 from django.views.generic import CreateView,ListView,UpdateView,View,FormView,DeleteView,DetailView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -117,17 +120,17 @@ class PermissionRequired(LoginRequiredMixin,View):
         return render(request,'auths/perm/permission_required.html')
 class UpdateUserCvB(LoginRequiredMixin,UpdateView):
     redirect_next_name='next'
-    login_url=reverse_lazy('auths:login')
+    login_url=reverse_lazy('login_user')
     model=User
     #form_class=UserForm
-    fields = ["is_active", "is_staff", "is_superuser",'email','username','full_name','role','phone_number','can_bypass','zone']
+    fields = ['role']
     template_name='auths/add_user.html'
     context_object_name='form'
-    success_url=reverse_lazy('auths:staff-members')
+    success_url=reverse_lazy('staff-members')
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data()
-        context['header']='Update User'
+        context['header']=User.objects.filter(id=self.kwargs['pk']).first().username+'-'+User.objects.filter(id=self.kwargs['pk']).first().name
         context['is_on_admin']=True
         return context
 
@@ -136,7 +139,7 @@ class UpdateUserCvB(LoginRequiredMixin,UpdateView):
         full_name=request.POST.get('full_name')
         role = request.POST.get('role')
         phone_number = request.POST.get('phone_number')
-        Staffob.objects.filter(user_id=self.kwargs['pk']).update(phone_number=phone_number,role_id=role,full_name=full_name)
+        Staffob.objects.filter(user_id=self.kwargs['pk']).update(role_id=role)
         #change password
         #password = Auths.get_default_password(request)
         #hash_password = bcrypt.hashpw(
@@ -153,7 +156,7 @@ class CreateRole(LoginRequiredMixin,CreateView):
     login_url = reverse_lazy('login_user')
 
     model = Role
-    form_class=RoleForm
+    form_class=RoleEditForm
     #fields = ['role_name','perm']
     template_name = 'auths/add_role.html'
     context_object_name = 'form'
@@ -175,16 +178,8 @@ class CreateRole(LoginRequiredMixin,CreateView):
         if form.is_valid():
             form = form.save(commit=False)
             form.save()
-            perm = request.POST.getlist('perm')
-            index = 0
-            while index < len(request.POST.getlist('perm')):
-                if perm[index]:
-                    form.perm.add(perm[index])
-                index = index + 1
 
-            if request.POST.get('perm_one_only'):
-                form.perm.add(request.POST.get('perm_one_only'))
-            return redirect('auths:roles')
+            return redirect('roles')
         return render(request, self.template_name, context)
 
 
@@ -293,18 +288,18 @@ class Auths:
 
     def logout(request):
         """logout the user destroy user session"""
-        if LoginLog.objects.filter(created_by=request.user).first():
-            log = LoginLog.objects.filter(created_by=request.user).order_by("-created_on")[
-                0
-            ]
-            logout_log = LoginLog.objects.filter(created_by=request.user, id=log.id).update(
-                logout_time=datetime.now()
-            )
-            # builtin function for session destroy
+        if not request.user.is_anonymous:
+            if LoginLog.objects.filter(created_by=request.user).first():
+                log = LoginLog.objects.filter(created_by=request.user).order_by("-created_on")[
+                    0
+                ]
+                logout_log = LoginLog.objects.filter(created_by=request.user, id=log.id).update(
+                    logout_time=datetime.now()
+                )
+                # builtin function for session destroy
         auth_logout(request)
-        if "next_page" in request.session:
-            del request.session["next_page"]
-        return redirect("/")
+
+        return redirect(reverse('login_user'))
 
     def set_default_password(request):
         """set default password to be used as default for all added staffs"""
@@ -706,6 +701,7 @@ class LoginView1(View):
 class LoginCode(View):
     form_class = CustomAuthenticationForm
     template_name = 'auths/login.html'
+    template_name_otp='auths/login_code.html'
     #template_name='wananchi/wananchi_home.html'
     # display blank form
     def get(self, request):
@@ -721,8 +717,11 @@ class LoginCode(View):
         if form.is_valid():
 
             if User.objects.filter(username__iexact=code).exists():
-                url=reverse_lazy('mob_auth_code')+'?code='+str(code)
-                return redirect(url)
+                user= User.objects.filter(username__iexact=code).first()
+                #url=reverse_lazy('mob_auth_code')+'?code='+str(code)
+                mocodeshort=(user.mobile)[-4:]
+                return render(request,self.template_name_otp,{'user':user,'mobcode':mocodeshort})
+                #return redirect(url)
             else:
                 message='Namba('+str(code)+') hii haijasajiliwa'
                 return render(request, self.template_name, {'form': form,'error':message})
@@ -730,6 +729,7 @@ class LoginCode(View):
         return render(request, self.template_name, {'form': form})
 
 
+@method_decorator(csrf_exempt,name='dispatch')
 class LoginAuthCode(View):
     form_class = CustomAuthCodeForm
     template_name = 'auths/login_code.html'
@@ -742,23 +742,34 @@ class LoginAuthCode(View):
         return render(request, self.template_name, {'form': form})
 
     # process form data
-
+    @csrf_exempt
     def post(self, request):
         form = self.form_class(request.POST)
         code = request.POST.get('auth_code')
+        userId=request.POST.get('userId')
 
 
         if form.is_valid():
-            if User.objects.filter(username__iexact=code).exists():
-                user=User.objects.filter(username__iexact=code).first()
-                login(request, user)
-                url = reverse_lazy('chair_candidates') + '?code=' + str(code)
-                return redirect(url)
-            else:
-                message = 'OTP - '+str(code) +' sio sahihi iangalie vema,alafu ingiza tena'
-                return render(request, self.template_name, {'form': form, 'error': message})
+            timeNow=datetime.now()
+            if User.objects.filter(otp_code=code,id=userId).exists():
+                user=User.objects.filter(otp_code=code,id=userId).first()
+                if User.objects.filter(otp_code=code,id=userId,otp_time__lte=timeNow).exists():
+                    login(request, user)
+                    if user.role:
+                        if 'msimamizi' in user.role.role_name:
+                            return HttpResponse(11)
+                    return HttpResponse(1)
 
-        return render(request, self.template_name, {'form': form})
+                else:
+                    #OPT imeexpire
+                    return HttpResponse(10)
+                #return redirect(url)
+            else:
+                #ivalid code
+                return HttpResponse(100)
+
+        print(form)
+        return HttpResponse(100)
 
 
 class ChangePassword(View):

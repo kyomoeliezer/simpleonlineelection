@@ -19,6 +19,7 @@
           </div>
             <div class="col-md-4  align-middle" style="background-color:#e5e5e5;">
                 <a href="{% url 'chagua_bodi' %}" ><button class="btn btn-primary col-md-12  align-middle">CHAGUA</button></a>
+                <a href="{% url 'bodi_yako' %}" ><button class="btn btn-warning col-md-12  align-middle">VIEW</button></a>
 
             </div>
 
@@ -40,8 +41,9 @@
                 </div>
 
           </div>
-            <div class="col-md-4  align-middle" style="background-color:#e5e5e5;">
-                <button class="btn btn-warning col-md-12  align-middle">CHAGUA</button>
+           <div class="col-md-4  align-middle" style="background-color:#e5e5e5;">
+                <a href="{% url 'chagua_kamati' %}" ><button class="btn btn-primary col-md-12  align-middle">CHAGUA</button></a>
+                <a href="{% url 'kamati_yako' %}" ><button class="btn btn-warning col-md-12  align-middle">VIEW</button></a>
 
             </div>
 
@@ -58,44 +60,22 @@
               <div class="col-md-8">
                     <div class="d-flex align-items-center pb-2">
                       <div class="bg-danger mr-2"></div>
-                      <h3 class="mb-0">CHAIR </h3>
+                      <h3 class="mb-0">CHAIR/VISE </h3>
                         <br/>
                         <br/>
                     </div>
 
               </div>
                 <div class="col-md-4  align-middle" style="background-color:#e5e5e5;">
-                    <button class="btn btn-info col-md-12  align-middle">VIEW</button>
+                <a href="{% url 'chagua_mwenyeviti' %}" ><button class="btn btn-primary col-md-12  align-middle">CHAGUA</button></a>
+                <a href="{% url 'wenyeviti_wako' %}" ><button class="btn btn-info col-md-12  align-middle">VIEW</button></a>
 
-                </div>
+            </div>
 
 
             </div>
           </div>
         </div>
      </div>
-<div class="col-md-5 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-8">
-                <div class="d-flex align-items-center pb-2">
-                  <div class="bg-danger mr-2"></div>
-                  <h3 class="mb-0">VISE CHAIR</h3>
-                    <br/>
-                    <br/>
-                </div>
-
-          </div>
-            <div class="col-md-4  align-middle" style="background-color:#e5e5e5;">
-                <button class="btn btn-success col-md-12  align-middle">VIEW</button>
-
-            </div>
-
-
-        </div>
-      </div>
-    </div>
- </div>
 
 {% endblock %}

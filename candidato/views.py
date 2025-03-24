@@ -1,8 +1,9 @@
 import datetime
+from dateutil.relativedelta import relativedelta
 import os
 import csv
 from django.core.files.storage import FileSystemStorage
-from django.db.models import Q
+from django.db.models import *
 from django.shortcuts import render,HttpResponse
 from django.urls import reverse_lazy
 import requests
@@ -18,7 +19,7 @@ from django.core.files.storage import FileSystemStorage
 from candidato.models import ChairCandidate
 from candidato.common import *
 from candidato.forms import *
-from voting.models import BoardVote
+from voting.models import *
 from auths.models import User
 
 ####CHAIR
@@ -747,13 +748,32 @@ class SmsList(View):
 
 class SendTestSMs(View):
     def get(self,request,*args,**kwargs):
-        return HttpResponse(send_sms('0752350620','Texting from View'));
+
+        mob=request.GET.get('mob')
+        nowTime=datetime.datetime.now()
+
+
+        userId=request.GET.get('userid')
+        dataOb=User.objects.filter(id=userId).first()
+        if dataOb.otp_time:
+            newTimeAfter30Min = dataOb.otp_time + relativedelta(minutes=30)
+            if User.objects.filter(id=userId,otp_time__lte=newTimeAfter30Min).exists():
+                return send_sms(dataOb.mobile,'Uchaguzi OTP ni ' + str(dataOb.otp_code) + '. Itumie ndani ya dakika tano.');
+
+        dataOb.otp_code=random.randint(101000,900000)
+        dataOb.otp_time = datetime.datetime.now()
+        dataOb.save()
+        return send_sms(dataOb.mobile,'Uchaguzi OTP ni '+str(dataOb.otp_code)+'. Itumie ndani ya dakika tano.');
 
 class Dashboard(View):
     template_name='dashboard/dashboard.html'
     def get(self,request,*args,**kwargs):
-        lists=SmsSent.objects.all().order_by('-created_on')
-        return render(request,self.template_name,{'lists':lists,'header':'Sent SMS Lists'})
+        context={}
+        context['board']=BoardVote.objects.aggregate(countT=Count('voter_id',distinct=True))['countT']
+        context['chair'] = ChairVote.objects.aggregate(countT=Count('voter_id', distinct=True))['countT']
+        context['committee'] = CommittteeVote.objects.aggregate(countT=Count('voter_id', distinct=True))['countT']
+
+        return render(request,self.template_name,context)
 
 class FlushButton(View):
     template_name='dashboard/dashboard.html'

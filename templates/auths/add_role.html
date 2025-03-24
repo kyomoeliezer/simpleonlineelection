@@ -1,10 +1,8 @@
-{% extends "common/base.html" %}
+{% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div id="content-page" class="content-page">
-   <div class="container-fluid">
-    <div class="row">
+
      <div class="col-12">
         <div class="iq-card">
             <div class="iq-card">
@@ -32,14 +30,9 @@
                          <div class="col-md-6">
                           {{form.role_name|as_crispy_field}}
                         </div>
-                        <div class="col-md-6">
-                          {{form.perm|as_crispy_field}}
-                        </div>
-                        <div class="col-md-6">
-                          {{form.perm_one_only|as_crispy_field}}
-                        </div>
 
-                         <div class="col-12">
+
+                         <div class="col-6">
                             <button type="submit" class="btn btn-primary float-right" >Save</button>
                          </div>
                     </div>
@@ -48,7 +41,6 @@
              </div>
         </div>
        </div>
-       </div>
-      </dev>
+
 
 {% endblock %}

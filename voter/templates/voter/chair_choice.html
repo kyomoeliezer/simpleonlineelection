@@ -1,0 +1,45 @@
+{% extends "base_voter.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="col-md-8 grid-margin">
+                    <div class="card">
+                   <div class="card-header">
+                     <div class="float-left">
+                      <a href="{% url 'voting' %}" class="btn btn-primary float-left">BACK</a>
+                    </div>
+                     <div class="float-right">
+                      <a href="{% url 'chagua_kamati' %}" class="btn btn-info float-left">BADILISHA </a>
+                    </div>
+                     <br/>
+                     <br/>
+                    <div class="header"><strong>{{request.user.username|upper}} {{request.user.name|upper}}</strong></div>
+
+
+                  </div>
+                      <div class="card-body">
+                        <h4 class="card-title mb-0 text-info"><strong>MACHAGUO YA KAMATI</strong></h4>
+                        <hr style="color:black;">
+                        {% for bd in board %}
+                        <div class="d-flex mt-3 py-2 border-bottom">
+                          <span class="img-sm rounded-circle bg-info text-white text-avatar">0{{forloop.counter}}</span>
+                          <div class="wrapper ml-2">
+                            <p class="mb-n1 font-weight-semibold">{{bd.candidate.candidate_name|upper}}</p>
+                            <small>{{bd.candidate.memberNo|upper}}</small>
+                          </div>
+
+                        </div>
+                        {% endfor %}
+
+                      </div>
+                    </div>
+
+
+{% endblock %}
+
+
+
+
+

@@ -40,7 +40,7 @@
                           <div class="sign-in-from">
                            <center> <img class="float-center " src="{% static 'login/uchaguzu.jpg' %}" style="width: 40%;"></center>
                               <center><div class="header">
-                                  <h3>OTP Authentication</h3>
+                                  <h4>{{user.username}}-{{user.name}}</h4>
                               </div> </center>
 
                            {% if error %}
@@ -51,27 +51,37 @@
                              <div class="iq-alert-text">{{error}}</div>
                           </div>
                               {% endif %}
+
+
+                          </div>
                               <form action="" method="post" class="mt-4">
                                 {% csrf_token %}
                                   <div class="form-group">
                                       <label for="exampleInputEmail1">Weka OTP ulipokea</label>
-                                      <input type="text" class="form-control mb-0" id="exampleInputEmail1" name="auth_code" value="{% if form.auth_code.value %}{{form.auth_code.value}}{% endif %}" placeholder="">
+                                      <input type="text" class="form-control mb-0" id="id_auth_code" name="auth_code" value="{% if form.auth_code.value %}{{form.auth_code.value}}{% endif %}" placeholder="" style="border-color:#000;">
+                                      <span class="text-danger" id="wrongOTP"></span>
                                   </div>
-
-
-                                  <div class="sign-info text-center">
+                                  <div class="sign-info text-center" style="padding:20px;">
                                       <div class="row">
-                                          <div class="col-md-6">
-                                              <a href="{% url 'mob_login_code' %}"> <button  class="btn btn-primary ">Back</button></a>
+                                          <div class="col-md-4">
+                                              <a class="btn btn-secondary" href="{% url 'mob_login_code' %}">Anza Upya</a>
 
                                           </div>
 
-                                          <div class="col-md-6">
-                                              &nbsp;&nbsp;<button type="submit" class="btn btn-danger">Login Now</button>
+                                          <div class="col-md-8">
+                                              &nbsp;&nbsp;<span  class="btn btn-info buttonSubmit" style="padding-right:30px;padding-left:30px;">Ingia Sasa</span>
 
                                           </div>
                                       </div>
                                   </div>
+
+                                  <div class="alert alert-info">
+                                        <p> <a id="otpRequest" href="" class="btn btn-info otpRequest" onclick="lateNow();countDownTimer();">Request OTP</a></p>
+                                      <p>Utapokea OTP kwenye namba yako ya simu(....{{mobcode}}) iweke ndan ya sekunde  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-warning" id="idCounterId" style="font-size:25px;"></span></p>
+                                  </div>
+
+
+
                               </form>
                           </div>
                       </div>
@@ -133,5 +143,75 @@
       <script src="{% static 'assets/login/js/chart-custom.js' %}"></script>
       <!-- Custom JavaScript -->
       <script src="{% static 'assets/login/js/custom.js' %}"></script>
+   <script>
+       function disableHttp(){
+        var link = document.getElementById('otpRequest');
+        var down = document.getElementById('Blinking text');
+        link.setAttribute("class", "disabled");
+        link.innerHTML = '';
+        link.setAttribute("style", "color: black;");
+
+
+       }
+
+       $(".buttonSubmit").click(function(){
+
+        var formData=document.getElementById("id_auth_code").value;
+        if(formData == '') document.getElementById("wrongOTP").innerHTML='Umekosea OTP code tafadhali iangalie vema';
+        else document.getElementById("wrongOTP").innerHTML='';
+
+
+          $.post("{% url 'mob_auth_code'  %}",
+          {
+            userId: "{{user.id}}",
+            auth_code: formData
+          },
+          function(data, status){
+                alert(data)
+            if(parseInt(data)==100) document.getElementById("wrongOTP").innerHTML='Umekosea OTP code tafadhali iangalie vema';
+            else if(parseInt(data)==11) window.location.href='{% url 'dashboard' %}';
+
+             else if(parseInt(data)==1) window.location.href='{% url 'voting' %}';
+          });
+        });
+
+
+
+
+
+        var urlLink='{% url 'test_sms' %}?userid={{user.id}}';
+       function httpGet(urlLink)
+            {
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open( "GET", urlLink, false ); // false for synchronous request
+                xmlHttp.send( null );
+                return xmlHttp.responseText;
+            }
+
+      let timer = 300;
+      httpGet(urlLink);
+
+
+        function updatePLEASE() {
+          timer--;
+        }
+
+        function countDownTimer() {
+        dakika=0;
+          if (timer > 0) {
+          var ramiander=timer%60;
+          var kamili =timer - ramiander;
+          if (kamili > 0) dakika=kamili/60;
+
+            disableHttp()
+            console.log(timer);
+            document.getElementById("idCounterId").innerHTML = dakika+':'+ramiander;
+            updatePLEASE();
+            setTimeout(countDownTimer, 1000); /* replicate wait 1 second */
+          }
+        }
+
+        countDownTimer();
+   </script>
    </body>
 </html>

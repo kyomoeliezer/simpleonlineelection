@@ -38,7 +38,7 @@
                       <td>{{staff.username}} </td>
                        <td>{{staff.role.role_name}} </td>
                       <td>
-                          {% if request.user.is_superuser or 'Supervisor' in request.user.role.role_name %}
+
                         <a href="{% url 'update_user' pk=staff.id %}" class="badge badge-pill badge-info">Edit</a>
                         <div class="badge badge-pill badge-danger" data-toggle="modal" data-target="#delete{{staff.id}}">{% if staff.is_active %}Delete{% else %} Activate {% endif %}</div>
                         <div id="delete{{staff.id}}" class="modal top" tabindex="-1">
@@ -63,7 +63,7 @@
                                </div>
                            </div>
                        </div>
-                          {% endif %}
+
                      </td>
                    </tr>
                    {% endfor %}

@@ -6,14 +6,14 @@ from . import web
 
 urlpatterns = [
     path("TEST0109", web.ChangePassword.as_view(), name="test"),
-    path("login", web.LoginView1.as_view(), name="login"),
+    path("login", web.LoginCode.as_view(), name="login"),
 
-    path("login", web.LoginView1.as_view(), name="login_user"),
+    path("login", web.LoginCode.as_view(), name="login_user"),
 
     path("mob-login-code", web.LoginCode.as_view(), name="mob_login_code"),
     path("mob-auth-code", web.LoginAuthCode.as_view(), name="mob_auth_code"),
 
-    path("login", web.LoginView1.as_view(), name="login-user"),
+    path("login", web.LoginCode.as_view(), name="login-user"),
     path("logout", web.Auths.logout, name="logout"),
     path("logout", web.Auths.logout, name="logout_user"),
 

@@ -62,7 +62,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=500, null=True, blank=True)
     mobile = models.CharField(max_length=500, null=True)
     role = models.ForeignKey("Role", on_delete=models.SET_NULL, null=True, blank=True,related_name='userrole')
-
+    otp_time=models.DateTimeField(null=True)
+    otp_code=models.CharField(null=True,max_length=200)
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["password"]
 
