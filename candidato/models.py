@@ -18,6 +18,14 @@ class ChairCandidate(BaseDB):
         return (str(self.memberNo)+' '+self.candidate_name).upper()
 
 
+class ViseCandidate(BaseDB):
+    memberNo = models.CharField(max_length=300,verbose_name='Member Registration No')
+    candidate_name = models.CharField(max_length=300,verbose_name='Candidate Name')
+
+    def __str__(self):
+        return (str(self.memberNo)+' '+self.candidate_name).upper()
+
+
 class BoardCandidate(BaseDB):
     memberNo = models.CharField(max_length=300,verbose_name='Member Registration Number')
     candidate_name = models.CharField(max_length=300,verbose_name='Candidate Name')
@@ -48,6 +56,7 @@ class Voter(BaseDB):
     mobile = models.CharField(max_length=300, verbose_name='Mobile')
     mobile2 = models.CharField(max_length=300, verbose_name='Second Mobile',null=True)
     updated_by = models.ForeignKey("auths.User",related_name='userRelatedUpdate',on_delete=models.CASCADE, null=True, blank=True)
+    user=models.ForeignKey("auths.User",related_name='votinglogin',on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return (str(self.memberNo)+' '+self.name).upper()

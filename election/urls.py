@@ -20,8 +20,10 @@ from django.urls import path
 
 urlpatterns = [
     path("auths", include("auths.urls")),
-    path('', include('candidato.urls')),
+
+    path('voterlive', include('voter.urls')),
     path('auttlogin/',include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
+    path('', include('candidato.urls')),
 
 ]

@@ -9,6 +9,7 @@ urlpatterns=[
     re_path(r'^sms', SmsList.as_view(), name="sms"),
 
     re_path(r'^import-voters', ImportVoters.as_view(), name="import_voter"),
+    re_path(r'^import-vise', ImportViseChair.as_view(), name="import_vise"),
     re_path(r'^import-board', ImportBoard.as_view(), name="import_board"),
     re_path(r'^import-chair', ImportChair.as_view(), name="import_chair"),
     re_path(r'^import-committe', ImportCommittee.as_view(), name="import_committee"),
@@ -32,6 +33,13 @@ urlpatterns=[
     re_path(r'^(?P<pk>[0-9]+)/chair/update', UpdateChairCandidate.as_view(), name="update_chaircandidate"),
     re_path(r'^(?P<pk>[0-9]+)/chair/delete', ChairCandidateDelete.as_view(), name="delete_chaircandidate"),
     re_path(r'chair-candidates', ChairCandidates.as_view(), name="chair_candidates"),
+
+    re_path(r'^(?P<pk>[0-9]+)/vise/update', ViseUpdateCandidate.as_view(), name="update_vise"),
+    re_path(r'^(?P<pk>[0-9]+)/vise/delete', ViseChairCandidateDelete.as_view(), name="delete_vise"),
+    re_path(r'vise-d', ViseCandidates.as_view(), name="vise_candidates"),
+    re_path(r'^flushbtn', FlushButton.as_view(), name="flush"),
+
+
     re_path(r'^', Dashboard.as_view(), name="dashboard"),
 
 

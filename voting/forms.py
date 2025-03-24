@@ -11,7 +11,7 @@ class AddBoardCandidateForm(forms.ModelForm):
         memberNo = self.cleaned_data["memberNo"]
         memberNo=str(memberNo)
 
-        if BoardCandidate.objects.filter(memberNo=memberNo).exists():
+        if ChairCandidate.objects.filter(memberNo=memberNo).exists():
             raise forms.ValidationError('This memberNo already added please recheck  ')
 
         return memberNo
@@ -93,11 +93,10 @@ class AddVoterForm(forms.ModelForm):
     def clean_mobile2(self):
         mobile2 = self.cleaned_data["mobile2"]
         mobile=str(mobile2)
-        if mobile:
 
-            if Voter.objects.filter(Q(mobile=mobile)|Q(mobile2=mobile)).exists():
-                voterob = Voter.objects.filter(Q(mobile=mobile)|Q(mobile2=mobile)).first()
-                raise forms.ValidationError(' This mobile2 already exists('+voterob.name+') please recheck ')
+        if Voter.objects.filter(Q(mobile=mobile)|Q(mobile2=mobile)).exists():
+            voterob = Voter.objects.filter(Q(mobile=mobile)|Q(mobile2=mobile)).first()
+            raise forms.ValidationError(' This mobile2 already exists('+voterob.name+') please recheck ')
 
         return mobile
 

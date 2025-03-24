@@ -1,0 +1,63 @@
+{% extends "base_voter.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+
+              <div class="col-md-6 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="header"><strong>{{request.user.username|upper}} {{request.user.name|upper}}</strong></div>
+                      <div class="header"><strong>Chagua wajumbe wa bodi</strong></div>
+                  </div>
+                  <div class="card-body">
+                    <form action="" method="post">
+                      {% csrf_token %}
+                        {% if htmlmsg %}
+                        <div class="row ">
+                            <div class="alert alert-danger">
+                                <p>{{htmlmsg|safe}}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-md-12 alert alert-info">
+                                <p>Mgombea mmoja achaguliwe kwenye nafasi moja tu. Mfumo hautakubali endapo utachakua jina moja kwenye nafasi zaid ya moja</p>
+                              </div>
+
+                            <div class="col-md-12">
+                                {{form.bodi1|as_crispy_field}}
+                              </div>
+                                <div class="col-md-12">
+                                {{form.bodi2|as_crispy_field}}
+                              </div>
+                                <div class="col-md-12">
+                                {{form.bodi3|as_crispy_field}}
+                              </div>
+                            <div class="col-md-12">
+                                {{form.bodi4|as_crispy_field}}
+                              </div>
+                            <div class="col-md-12">
+                                {{form.bodi5|as_crispy_field}}
+                              </div>
+                            <div class="col-md-12">
+                                {{form.bodi6|as_crispy_field}}
+                              </div>
+                             <div class="col-md-12">
+                                {{form.bodi7|as_crispy_field}}
+                              </div>
+                            </div>
+
+                    <div class="col-6">
+                            <button type="submit" class="btn btn-primary float-right" >Tuma Machagu yako</button>
+                         </div>
+                    </form>
+
+                  </div>
+
+                </div>
+              </div>
+
+
+{% endblock %}

@@ -18,8 +18,11 @@ from django.core.files.storage import FileSystemStorage
 from candidato.models import ChairCandidate
 from candidato.common import *
 from candidato.forms import *
+from voting.models import BoardVote
+from auths.models import User
 
-class ChairCandidates(CreateView):
+####CHAIR
+class ChairCandidates(LoginRequiredMixin,CreateView):
     model = ChairCandidate
     redirect_field_name = 'next'
     login_url = reverse_lazy('login_user')
@@ -50,8 +53,6 @@ class ChairCandidates(CreateView):
             return redirect(reverse('chair_candidates'))
         lists=ChairCandidate.objects.all().order_by('candidate_name')
         return render(self.request, self.template_name, {'header':self.header,'form': form, 'header': 'Wagombea','lists':lists})
-
-
 
 class UpdateChairCandidate(LoginRequiredMixin,SuccessMessageMixin,UpdateView):
     model = ChairCandidate
@@ -91,7 +92,74 @@ class ChairCandidateDelete(LoginRequiredMixin,DeleteView,SuccessMessageMixin):
             return self.post(request, *args, **kwargs)
     def get_success_url(self):
         return reverse('chair_candidates')
+#####VISE CHAIR
+class ViseCandidates(LoginRequiredMixin,CreateView):
+    model = ViseCandidate
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    template_name = 'candidate/candidates_vise.html'
+    form_class=AddViseCandidateForm
 
+    header = 'Vise Candidates'
+    success_url = reverse_lazy('vise_candidates')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['lists'] =ViseCandidate.objects.all().order_by('candidate_name')
+        context['form']=self.form_class
+        context['header']=self.header
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+
+            form = form.save(commit=False)
+            form.created_by_id = self.request.user.id
+            form.save()
+            messages.success(request, 'Succes!, Umejaza taarifa za  mgombea')
+
+            return redirect(reverse('vise_candidates'))
+        lists=ViseCandidate.objects.all().order_by('candidate_name')
+        return render(self.request, self.template_name, {'header':self.header,'form': form, 'header': 'Wagombea','lists':lists})
+
+class ViseUpdateCandidate(LoginRequiredMixin,SuccessMessageMixin,UpdateView):
+
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    template_name = 'candidate/candidates_vise.html'
+    model=ViseCandidate
+    context_object_name = 'form'
+    fields=['memberNo','candidate_name']
+    header = 'Add Vise Candidate'
+    success_message = "Success!  Success Updated"
+    success_url = reverse_lazy('vise_candidates')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['mgombea'] = ViseCandidate.objects.filter(id=self.kwargs['pk']).first()
+        context['lists'] = ViseCandidate.objects.all().order_by('candidate_name')
+        context['header']='Update Vise Candidate'
+        return context
+class ViseChairCandidateDelete(LoginRequiredMixin,DeleteView,SuccessMessageMixin):
+    """DELETE"""
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    model = ViseCandidate
+    success_message = "Success!  deleted successfully."
+    def post(self, request, *args, **kwargs):
+        try:
+            return self.delete(request, *args, **kwargs)
+            messages.success(request,'Success!,Deleted')
+        except ProtectedError:
+            messages.warning(request,'Faile!,You cannot delete this it is related to others')
+            return redirect(reverse('vise_candidates'))
+
+    def get(self, request, *args, **kwargs):
+            return self.post(request, *args, **kwargs)
+    def get_success_url(self):
+        return reverse('vise_candidates')
 ######## COMMITTEE
 class CommitteeCandidatesView(CreateView):
     model = CommitteeCandidate
@@ -262,9 +330,13 @@ class VotersRegView(LoginRequiredMixin,CreateView):
 
         if form.is_valid():
 
-            form = form.save(commit=False)
-            form.created_by_id = self.request.user.id
-            form.save()
+            form2 = form.save(commit=False)
+            form2.created_by_id = self.request.user.id
+            form2.save()
+
+            user=User.objects.create(mobile=request.POST.get('mobile'),username=request.POST.get('memberNo'),name=request.POST.get('candidate_name'))
+            form2.user = user
+            form2.save()
             messages.success(request, 'Succes!, Umejaza taarifa za  mgombea wa board')
 
             return redirect(self.success_url)
@@ -293,23 +365,35 @@ class VotersUpdateView(LoginRequiredMixin,UpdateView):
             memberNo = request.POST.get('memberNo')
             mobile=request.POST.get('mobile')
             mobile2 = request.POST.get('mobile2')
+            name = request.POST.get('name')
             if Voter.objects.filter(~Q(id=self.kwargs['pk'])&Q(Q(mobile__iexact=mobile)|Q(mobile2__iexact=mobile))).exists():
                 voterOb=Voter.objects.filter(~Q(id=self.kwargs['pk'])&Q(Q(mobile__iexact=mobile)|Q(mobile2__iexact=mobile))).first()
                 mess='Mobile number ('+str(mobile)+') exists to other voters ('+voterOb.name+')'
                 return render(self.request, self.template_name,
                               {'header': self.header, 'form': form, 'header': 'Wagombea', 'error': mess})
-            if Voter.objects.filter(~Q(id=self.kwargs['pk'])&Q(Q(mobile__iexact=mobile2)|Q(mobile2__iexact=mobile2))).exists():
+            elif Voter.objects.filter(~Q(id=self.kwargs['pk'])&Q(Q(mobile__iexact=mobile2)|Q(mobile2__iexact=mobile2))).exists() and mobile2:
                 voterOb=Voter.objects.filter(~Q(id=self.kwargs['pk'])&Q(Q(mobile__iexact=mobile2)|Q(mobile2__iexact=mobile2))).first()
                 mess='Mobile number ('+str(mobile2)+') exists to other voters ('+voterOb.name+')'
                 return render(self.request, self.template_name,
                               {'header': self.header, 'form': form, 'header': 'Wagombea', 'error': mess})
 
-            if Voter.objects.filter(~Q(id=self.kwargs['pk'])&Q(memberNo__iexact=memberNo)).exists():
+            elif Voter.objects.filter(~Q(id=self.kwargs['pk'])&Q(memberNo__iexact=memberNo)).exists():
                 voterOb=Voter.objects.filter(~Q(id=self.kwargs['pk'])&Q(memberNo__iexact=memberNo)).first()
                 mess='Reg number ('+str(memberNo)+') exists to other voters ('+voterOb.name+')'
                 return render(self.request, self.template_name,
                               {'header': self.header, 'form': form, 'header': 'Wagombea', 'error': mess})
-
+            else:
+                Voter.objects.filter(id=self.kwargs['pk']).update(
+                    memberNo=memberNo,
+                    mobile=mobile,
+                    mobile2=mobile2,
+                    name=name
+                )
+                voter=Voter.objects.filter(id=self.kwargs['pk']).first()
+                User.objects.filter(id=voter.user_id).update(
+                    username=memberNo,name=name,
+                mobile = mobile
+                )
             messages.success(request, 'Succes!, Umejaza taarifa za  mgombea wa board')
 
             return redirect(reverse('voters'))
@@ -388,12 +472,16 @@ class ImportVoters(LoginRequiredMixin,CreateView):
                                 updated_on=datetime.datetime.now(),
                                 bywhat='import'
                             )
+                            voter = Voter.objects.filter(memberNo__iexact=row['MEMBER_NO']).first()
+                            User.objects.filter(id=voter.user_id).update(
+                                username=row['MEMBER_NO'], name=row['NAME'],mobile=row['MOBILE'],
+                            )
                             html=html+' Updated</td>'
 
                             coAdd=coAdd+1
 
                         else:
-                            Voter.objects.create(
+                            voter=Voter.objects.create(
                                 memberNo=row['MEMBER_NO'],
                                 mobile=row['MOBILE'],
                                 name=row['NAME'],
@@ -401,6 +489,11 @@ class ImportVoters(LoginRequiredMixin,CreateView):
                                 updated_on=datetime.datetime.now(),
                                 bywhat='import'
                             )
+                            user=User.objects.create(mobile=row['MOBILE'],
+                                username=row['MEMBER_NO'], name=row['NAME']
+                            )
+                            voter.user=user
+                            voter.save()
                             cou=cou+1
 
                             html = html + ' Registered</td>'
@@ -588,6 +681,63 @@ class ImportChair(LoginRequiredMixin,CreateView):
             return render(request,self.template_name,{'form':form,'header':'Imported Data Report','htmldata':html})
 
         return render(request,self.template_name,{'form':form,'header':self.header})
+class ImportViseChair(LoginRequiredMixin,CreateView):
+    login_url = reverse_lazy('auths:login_user')
+    redirect_field_name = 'next'
+    template_name = 'import/import_chair.html'
+    model = ViseCandidate
+    header='Import Vise Chair'
+    form_class=VoterImport
+    def get(self, request, *args, **kwargs):
+
+        header=self.header
+        return render(request,self.template_name,{'form':self.form_class,'header':header})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        html=''
+        if form.is_valid():
+            file = request.FILES['file']
+            fs = FileSystemStorage()
+            name = 'Import-committe-file.csv'
+            file_name = fs.save(name, file)
+            file_path = fs.path(file_name)
+            with open(fs.path(file_name), 'r') as csvfile:
+                reader = csv.DictReader(csvfile)
+                counter = 0
+                cou=0
+                coAdd=0
+                for row in reader:
+                    html=html+'<tr><td>'+row['MEMBER_NO']+'</td><td>'+row['NAME']+'</td>'
+                    if row['MEMBER_NO'] and row['NAME'] :
+                        if ViseCandidate.objects.filter(memberNo__iexact=row['MEMBER_NO']).exists():
+                            ViseCandidate.objects.filter(memberNo__iexact=row['MEMBER_NO']).update(
+
+                                candidate_name=row['NAME'],
+                                bywhat='import'
+                            )
+                            html=html+' Updated</td>'
+
+                            coAdd=coAdd+1
+
+                        else:
+                            ViseCandidate.objects.create(
+                                memberNo=row['MEMBER_NO'],
+                                candidate_name=row['NAME']
+                            )
+                            cou=cou+1
+
+                            html = html + ' Registered</td>'
+                    else:
+                        html = html + ' Some data is missing</td>'
+
+                    html = html+'</tr>'
+                    counter += 1
+            messages.success(request,'Succesful imported added-'+str(cou)+' updated - '+str(coAdd))
+            return redirect(reverse('vise_candidates'))
+            return render(request,self.template_name,{'form':form,'header':'Imported Data Report','htmldata':html})
+
+        return render(request,self.template_name,{'form':form,'header':self.header})
 
 class SmsList(View):
     template_name='sms/lists.html'
@@ -604,3 +754,22 @@ class Dashboard(View):
     def get(self,request,*args,**kwargs):
         lists=SmsSent.objects.all().order_by('-created_on')
         return render(request,self.template_name,{'lists':lists,'header':'Sent SMS Lists'})
+
+class FlushButton(View):
+    template_name='dashboard/dashboard.html'
+    def get(self,request,*args,**kwargs):
+      BoardVote.objects.all().delete()
+      ChairCandidate.objects.all().delete()
+      CommitteeCandidate.objects.all().delete()
+      BoardCandidate.objects.all().delete()
+      ViseCandidate.objects.all().delete()
+      voter=Voter.objects.all()
+      for v in voter:
+          User.objects.filter(id=v.user_id).delete()
+      Voter.objects.all().delete()
+
+
+
+
+
+      return redirect(reverse('dashboard'))

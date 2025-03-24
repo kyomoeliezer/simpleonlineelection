@@ -11,13 +11,13 @@
                   </div>
                     <div class="float-right">
 
-                      <a href="{% url 'import_board' %}" class="btn btn-primary float-right">Import</a>
+                      <a href="{% url 'import_vise' %}" class="btn btn-primary float-right">Import</a>
                     </div>
                   <div class="card-body">
 
           					<h4 class="card-title">Total Votes: 300</h4>
           					<div class="table-responsive">
-                              <table class="table table-bordered tbl">
+                              <table class="table table-bordered">
                                 <thead>
                                   <tr>
                                     <th style="width:10%;"> # </th>
@@ -40,8 +40,8 @@
                                         <div class="progress-bar bg-success" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
                                       </div>
                                     </td>
-                                      <td><a href="{% url 'update_boardcandidate' pk=li.id %}" ><i class="fa fa-edit"></i> </a> </td>
-                                       <td><a href="javascript:;" onclick="modal_delete('{% url 'delete_boardcandidate' pk=li.id %}');"><i class="fa fa-trash text-danger"></i> </a> </td>
+                                      <td><a href="{% url 'update_vise' pk=li.id %}" ><i class="fa fa-edit"></i> </a> </td>
+                                       <td><a href="javascript:;" onclick="modal_delete('{% url 'delete_vise' pk=li.id %}');"><i class="fa fa-trash text-danger"></i> </a> </td>
 
 
                                   </tr>

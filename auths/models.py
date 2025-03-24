@@ -58,10 +58,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(auto_now=True)
     password = models.CharField(max_length=5000)
     username = models.CharField(max_length=255, unique=True)
-    memberNo = models.CharField(max_length=255, null=True)
     ####MIGRATING TO single user
-    full_name = models.CharField(max_length=500, null=True, blank=True)
-    phone_number = models.CharField(max_length=500, null=True)
+    name = models.CharField(max_length=500, null=True, blank=True)
+    mobile = models.CharField(max_length=500, null=True)
     role = models.ForeignKey("Role", on_delete=models.SET_NULL, null=True, blank=True,related_name='userrole')
 
     USERNAME_FIELD = "username"

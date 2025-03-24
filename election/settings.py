@@ -32,7 +32,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, "._demo_env.dev"))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['158.220.90.202','chaguaviongozi.com']
+ALLOWED_HOSTS = ['158.220.90.202','chaguaviongozi.com','127.0.0.1']
 
 
 # Application definition
@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     "crispy_bootstrap4",
     'candidato',
     "auths",
+    "voter",
+    "voting"
 ]
 
 AUTH_USER_MODEL = "auths.User"
