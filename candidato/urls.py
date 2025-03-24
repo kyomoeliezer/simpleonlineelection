@@ -1,24 +1,24 @@
 
-from django.urls import include, re_path
+from django.urls import include, re_path,path
 from candidato.views import *
 
 
 urlpatterns=[
 
-    re_path(r'^test-sms', SendTestSMs.as_view(), name="test_sms"),
-    re_path(r'^sms', SmsList.as_view(), name="sms"),
+    re_path(r'^test-sms$', SendTestSMs.as_view(), name="test_sms"),
+    re_path(r'^sms$', SmsList.as_view(), name="sms"),
 
-    re_path(r'^import-voters', ImportVoters.as_view(), name="import_voter"),
-    re_path(r'^import-vise', ImportViseChair.as_view(), name="import_vise"),
-    re_path(r'^import-board', ImportBoard.as_view(), name="import_board"),
-    re_path(r'^import-chair', ImportChair.as_view(), name="import_chair"),
-    re_path(r'^import-committe', ImportCommittee.as_view(), name="import_committee"),
+    re_path(r'^import-voters$', ImportVoters.as_view(), name="import_voter"),
+    re_path(r'^import-vise$', ImportViseChair.as_view(), name="import_vise"),
+    re_path(r'^import-board$', ImportBoard.as_view(), name="import_board"),
+    re_path(r'^import-chair$', ImportChair.as_view(), name="import_chair"),
+    re_path(r'^import-committe$', ImportCommittee.as_view(), name="import_committee"),
 
-    re_path(r'^(?P<pk>[0-9]+)/voter/update', VotersUpdateView.as_view(), name="update_voter"),
-    re_path(r'^(?P<pk>[0-9]+)/voter/delete', DeleteVoter.as_view(), name="delete_voter"),
-    re_path(r'new-voter', VotersRegView.as_view(), name="new_voter"),
+    re_path(r'^(?P<pk>[0-9]+)/voter/update$', VotersUpdateView.as_view(), name="update_voter"),
+    re_path(r'^(?P<pk>[0-9]+)/voter/delete$', DeleteVoter.as_view(), name="delete_voter"),
+    re_path(r'new-voter$', VotersRegView.as_view(), name="new_voter"),
 
-    re_path(r'voters-lists', VotersView.as_view(), name="voters"),
+    re_path(r'voters-lists$', VotersView.as_view(), name="voters"),
 
 
     re_path(r'^(?P<pk>[0-9]+)/committee/update', UpdateCommitteeCandidate.as_view(), name="update_committeecandidate"),
@@ -49,7 +49,7 @@ urlpatterns=[
     re_path(r'^cpubchair', PublishUnPublishChairView.as_view(), name="pub_chair"),
 
 
-    re_path(r'^', Dashboard.as_view(), name="dashboard"),
+    path(r'', Dashboard.as_view(), name="dashboard"),
 
 
     ####HOOKS

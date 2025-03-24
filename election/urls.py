@@ -25,16 +25,17 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 if not Publishing.objects.first():
     Publishing.objects.create()
 
+if settings.DEBUG:  # new
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += staticfiles_urlpatterns()
+
 urlpatterns = [
     path("auths/", include("auths.urls")),
     path('voterlive/', include('voter.urls')),
     path('auttlogin/',include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    path('', include('candidato.urls')),
+    path("", include('candidato.urls')),
 
 ]
-if settings.DEBUG:  # new
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += staticfiles_urlpatterns()
 
 
