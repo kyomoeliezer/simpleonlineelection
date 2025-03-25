@@ -27,11 +27,12 @@ if not Publishing.objects.first():
 
 
 urlpatterns = [
+    path("/", include('candidato.urls')),
     path("auths/", include("auths.urls")),
     path('voterlive/', include('voter.urls')),
     path('auttlogin/',include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    path("", include('candidato.urls')),
+
 
 ]
 if settings.DEBUG:  # new
