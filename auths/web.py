@@ -759,7 +759,7 @@ class LoginAuthCode(View):
             timeNow=datetime.now()
             if User.objects.filter(otp_code=code,id=userId).exists():
                 user=User.objects.filter(otp_code=code,id=userId).first()
-                if User.objects.filter(otp_code=code,id=userId,otp_time__lte=timeNow).exists():
+                if User.objects.filter(otp_code=code,id=userId,otp_time__gte=timeNow).exists():
                     login(request, user)
                     if user.role:
                         if 'msimamizi' in user.role.role_name:

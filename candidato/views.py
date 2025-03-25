@@ -756,10 +756,6 @@ class SendTestSMs(View):
 
         userId=request.GET.get('userid')
         dataOb=User.objects.filter(id=userId).first()
-        if dataOb.otp_time:
-            #newTimeAfter30Min = dataOb.otp_time + relativedelta(minutes=30)
-            if User.objects.filter(id=userId,otp_time__gte=nowTime).exists():
-                return send_sms(dataOb.mobile,'Uchaguzi OTP ni ' + str(dataOb.otp_code) + '. Itumie ndani ya dakika tano.');
 
         dataOb.otp_code=random.randint(101000,900000)
         dataOb.otp_time = newTimeAfter30Min
