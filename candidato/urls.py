@@ -49,7 +49,7 @@ urlpatterns=[
     re_path(r'^cpubchair', PublishUnPublishChairView.as_view(), name="pub_chair"),
 
 
-    path('', Dashboard.as_view(), name="dashboard"),
+    path("", Dashboard.as_view(), name="dashboard"),
 
 
     ####HOOKS
