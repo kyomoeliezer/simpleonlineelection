@@ -751,19 +751,20 @@ class SendTestSMs(View):
 
         mob=request.GET.get('mob')
         nowTime=datetime.datetime.now()
+        newTimeAfter30Min = nowTime + relativedelta(minutes=30)
 
 
         userId=request.GET.get('userid')
         dataOb=User.objects.filter(id=userId).first()
         if dataOb.otp_time:
-            newTimeAfter30Min = dataOb.otp_time + relativedelta(minutes=30)
-            if User.objects.filter(id=userId,otp_time__lte=newTimeAfter30Min).exists():
+            #newTimeAfter30Min = dataOb.otp_time + relativedelta(minutes=30)
+            if User.objects.filter(id=userId,otp_time__gte=nowTime).exists():
                 return send_sms(dataOb.mobile,'Uchaguzi OTP ni ' + str(dataOb.otp_code) + '. Itumie ndani ya dakika tano.');
 
         dataOb.otp_code=random.randint(101000,900000)
-        dataOb.otp_time = datetime.datetime.now()
+        dataOb.otp_time = newTimeAfter30Min
         dataOb.save()
-        return send_sms(dataOb.mobile,'Uchaguzi OTP ni '+str(dataOb.otp_code)+'. Itumie ndani ya dakika tano.');
+        return send_sms(dataOb.mobile,'Uchaguzi OTP ni '+str(dataOb.otp_code)+'. Itumie ndani ya dakika 30.');
 
 class Dashboard(LoginRequiredMixin,View):
     login_url = reverse_lazy('login_user')
