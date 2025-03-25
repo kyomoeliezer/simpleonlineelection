@@ -8,7 +8,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <title>Uchaguzi</title>
       <!-- Favicon -->
-      <link rel="shortcut icon" href="{{logo_url}}" />
+      <link rel="shortcut icon" href="{% static 'icons/favicon.ico' %}" />
       <!-- Bootstrap CSS -->
       <link rel="stylesheet" href="{% static 'assets/login/css/bootstrap.min.css' %}">
       <!-- Typography CSS -->
@@ -167,7 +167,7 @@
             auth_code: formData
           },
           function(data, status){
-                alert(data)
+                //console.log(data)
             if(parseInt(data)==100) document.getElementById("wrongOTP").innerHTML='Umekosea OTP code tafadhali iangalie vema';
 
             else if(parseInt(data)==11) window.location.href='{% url 'dashboard' %}';
