@@ -27,7 +27,7 @@ if not Publishing.objects.first():
 
 
 urlpatterns = [
-    path("", include('candidato.urls')),
+    path("live", include('candidato.urls')),
     path("auths/", include("auths.urls")),
     path('voterlive/', include('voter.urls')),
     path('auttlogin/',include('django.contrib.auth.urls')),
