@@ -465,7 +465,7 @@ class ImportVoters(LoginRequiredMixin,CreateView):
                 for row in reader:
                     html=html+'<tr><td>'+row['MEMBER_NO']+'</td><td>'+row['NAME']+'</td><td>'+row['MOBILE']+'</td>'+row['MOBILE2']+'</td><td>'
                     if row['MEMBER_NO'] and row['NAME'] and row['MOBILE'] :
-                        if Voter.objects.filter(memberNo__iexact=row['MEMBER_NO']).exists() and Voter.objects.filter(mobile__iexact=row['MOBILE']).exists()
+                        if Voter.objects.filter(memberNo__iexact=row['MEMBER_NO']).exists() and Voter.objects.filter(mobile__iexact=row['MOBILE']).exists():
                             Voter.objects.filter(memberNo__iexact=row['MEMBER_NO']).update(
                                 mobile=row['MOBILE'],
                                 name=row['NAME'],
