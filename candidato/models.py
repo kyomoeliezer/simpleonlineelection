@@ -59,6 +59,7 @@ class Voter(BaseDB):
     user=models.ForeignKey("auths.User",related_name='votinglogin',on_delete=models.CASCADE, null=True, blank=True)
     is_attended = models.BooleanField(default=False)
     attended_at = models.DateTimeField(null=True)
+    is_on_meetin_option = models.BooleanField(default=True)
     def __str__(self):
         return (str(self.memberNo)+' '+self.name).upper()
 

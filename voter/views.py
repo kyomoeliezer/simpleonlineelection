@@ -53,6 +53,10 @@ class Votings(LoginRequiredMixin,View):
         context={}
         context['pub']=Publishing.objects.first()
         context['voter']=voter=Voter.objects.filter(user_id=request.user.id).first()
+        if not voter.is_attended and voter.is_on_meetin_option:
+            voter.is_on_meetin_option=False
+            voter.save()
+            return redirect(reverse('attend_a_meeting_view',kwargs={'pk':voter.id}))
         context['board']=BoardVote.objects.filter(voter_id=voter.id).exists()
         context['committee'] = CommittteeVote.objects.filter(voter_id=voter.id).exists()
         context['chair'] = ChairVote.objects.filter(voter_id=voter.id).exists()

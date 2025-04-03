@@ -14,8 +14,8 @@ urlpatterns = [
     path("mob-auth-code", web.LoginAuthCode.as_view(), name="mob_auth_code"),
 
     path("login", web.LoginCode.as_view(), name="login-user"),
-    path("logout", web.Auths.logout, name="logout"),
-    path("logout", web.Auths.logout, name="logout_user"),
+    path("logoutuser", web.Auths.logout, name="logout"),
+    path("logoutuser", web.Auths.logout, name="logout_user"),
 
     path(
         "add-default-password",
