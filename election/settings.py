@@ -32,7 +32,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, "._demo_env.dev"))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://127.0.0.1',,'http://127.0.0.1','https://chaguaviongozi.com','http://chaguaviongozi.com','http://158.220.90.202','https://158.220.90.202']
 
 
 # Application definition
