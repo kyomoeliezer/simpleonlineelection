@@ -32,7 +32,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, "._demo_env.dev"))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['chaguaviongozi.com','https://127.0.0.1','http://127.0.0.1','https://chaguaviongozi.com','http://chaguaviongozi.com','http://158.220.90.202','https://158.220.90.202']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -87,6 +87,7 @@ TEMPLATES = [
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 WSGI_APPLICATION = 'election.wsgi.application'
 
+CSRF_TRUSTED_ORIGINS = ["http://*", "https://*",'https://chaguaviongozi.com','https://chaguaviongozi.com:8001','http://chaguaviongozi.com:8001','https://158.220.90.202:8001','http://158.220.90.202:8001','https://158.220.90.202:8008','http://158.220.90.202:8008']
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
