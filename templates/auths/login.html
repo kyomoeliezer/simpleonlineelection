@@ -59,9 +59,10 @@
 
 
                                   <div class="sign-info text-center">
-                                     <button type="submit" class="btn btn-primary d-block w-100 mb-2">Next</button>
+                                     <button type="submit" class="btn btn-primary d-block w-100 mb-2" id="Login">Next</button>
 
                                   </div>
+                                  <div id="loadingGif" style="display:none"><img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"></div>
                               </form>
                           </div>
                       </div>
@@ -123,5 +124,16 @@
       <script src="{% static 'assets/login/js/chart-custom.js' %}"></script>
       <!-- Custom JavaScript -->
       <script src="{% static 'assets/login/js/custom.js' %}"></script>
+   <script>
+       function showDiv() {
+          document.getElementById('Login').style.display = "none";
+          document.getElementById('loadingGif').style.display = "block";
+          setTimeout(function() {
+            document.getElementById('loadingGif').style.display = "none";
+            document.getElementById('showme').style.display = "block";
+          },2000);
+
+        }
+   </script>
    </body>
 </html>
