@@ -57,7 +57,8 @@ class Voter(BaseDB):
     mobile2 = models.CharField(max_length=300, verbose_name='Second Mobile',null=True)
     updated_by = models.ForeignKey("auths.User",related_name='userRelatedUpdate',on_delete=models.CASCADE, null=True, blank=True)
     user=models.ForeignKey("auths.User",related_name='votinglogin',on_delete=models.CASCADE, null=True, blank=True)
-
+    is_attended = models.BooleanField(default=False)
+    attended_at = models.DateTimeField(null=True)
     def __str__(self):
         return (str(self.memberNo)+' '+self.name).upper()
 

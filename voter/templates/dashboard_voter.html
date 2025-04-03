@@ -13,7 +13,13 @@
             </div>
 
     </div>
-
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                {% if voter.is_attended %} YOU HAVE ATTENDED  at {{voter.attended_at}} {% else %} <a href="javascript:;" onclick="">ATTEND MEETING</a>{% endif %}
+            </div>
+        </div>
+    </div>
     <div class="col-md-6 grid-margin stretch-card">
 
     <div class="card">
