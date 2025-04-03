@@ -1,0 +1,33 @@
+{% extends "base_voter.html" %}
+{% load static %}
+{% load humanize %}
+{% load tags %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% published as pub %}
+
+    <div class="col-md-12 " style="padding:30px;">
+
+            <div class="header">
+                <h3>{{voter.memberNo}}-{{voter.name|upper}}</h3>
+            </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {% if voter.is_attended %}
+            <div class="alert alert-success">
+                 UPO KWENYE MKUTANO KUANZIA SAA  {{voter.attended_at}}
+
+                <br><br>
+                 <a class="btn btn-info" href="{% url 'voting' .id %}">ENDELEA NA MKUTANO</a>
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+             <a class="btn btn-primary" href="javascript:;" onclick="{% url 'attend_a_meeting' pk=voter.id %}">Bofya KUINGIA KWENYE MKUTANO</a>
+             </div>
+            {% endif %}
+            </div>
+    </div>
+
+{% endblock %}

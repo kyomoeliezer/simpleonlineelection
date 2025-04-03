@@ -411,12 +411,21 @@ class AttendNow(LoginRequiredMixin,View):
     def get(self,request,*args,**kwargs):
         context = {}
         voter=Voter.objects.filter(id=self.kwargs['pk']).first()
-        if not voter.is_attend:
+        if not voter.is_attended:
             voter.attended_at=datetime.datetime.now()
-            voter.is_attend=True
+            voter.is_attended=True
             voter.save()
         messages.success(request,'Attend the meeting')
         return redirect(reverse('voting'))
+
+class AttendNowViewOnly(LoginRequiredMixin,View):
+    login_url = reverse_lazy('login_user')
+    redirect_field_name = 'next'
+    def get(self,request,*args,**kwargs):
+        context = {}
+        voter=Voter.objects.filter(id=self.kwargs['pk']).first()
+        template_name='voter/attend_meeting.html'
+        return render(request,template_name,{'voter':voter})
 
 ############################################
 ####END MATOKEO#############################
