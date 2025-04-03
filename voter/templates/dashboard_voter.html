@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="alert alert-success">
-                {% if voter.is_attended %} UPO KWENYE MKUTANO KUANZIA  {{voter.attended_at|date:'H:m:s'}} {% else %} <a href="javascript:;" onclick="">Bofya KUINGIA KWENYE MKUTANO</a>{% endif %}
+                {% if voter.is_attended %} UPO KWENYE MKUTANO KUANZIA  {{voter.attended_at|date:'H:i:s'}} {% else %} <a href="javascript:;" onclick="">Bofya KUINGIA KWENYE MKUTANO</a>{% endif %}
             </div>
         </div>
     </div>
