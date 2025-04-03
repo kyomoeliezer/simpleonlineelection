@@ -855,6 +855,7 @@ class FlushButton(LoginRequiredMixin,View):
         BoardVote.objects.all().delete()
         ChairVote.objects.all().delete()
         CommittteeVote.objects.all().delete()
+        Publishing.objects.all().delete()
         voter=Voter.objects.all()
         for v in voter:
           User.objects.filter(id=v.user_id).delete()
