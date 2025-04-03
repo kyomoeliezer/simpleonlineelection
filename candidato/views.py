@@ -845,17 +845,20 @@ class FlushButton(LoginRequiredMixin,View):
     redirect_field_name = 'next'
     template_name='dashboard/dashboard.html'
     def get(self,request,*args,**kwargs):
-      BoardVote.objects.all().delete()
-      ChairCandidate.objects.all().delete()
-      CommitteeCandidate.objects.all().delete()
-      BoardCandidate.objects.all().delete()
-      ViseCandidate.objects.all().delete()
-      voter=Voter.objects.all()
-      for v in voter:
+        """
+        BoardVote.objects.all().delete()
+        ChairCandidate.objects.all().delete()
+        CommitteeCandidate.objects.all().delete()
+        BoardCandidate.objects.all().delete()
+        ViseCandidate.objects.all().delete()
+        """
+        voter=Voter.objects.all()
+        for v in voter:
           User.objects.filter(id=v.user_id).delete()
-      Voter.objects.all().delete()
+        Voter.objects.all().delete()
 
-      return redirect(reverse('dashboard'))
+
+        return redirect(reverse('dashboard'))
 
 class PublishUnPublishBodiView(LoginRequiredMixin,View):
     login_url = reverse_lazy('login_user')
