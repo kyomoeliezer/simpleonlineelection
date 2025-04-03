@@ -39,7 +39,7 @@ def data(self):
     else:
         print("Invalid URL")
 
-
+data()
 
 urlpatterns = [
     path("", include('candidato.urls')),
