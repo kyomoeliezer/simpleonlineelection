@@ -27,20 +27,6 @@ if not Publishing.objects.first():
     Publishing.objects.create()
 
 
-import re
-
-def data(self):
-    url = self.request.build_absolute_uri()
-    pattern = "^https:\/\/[0-9A-z.]+.[0-9A-z.]+.[a-z]+$"
-    result = re.match(pattern, url)
-
-    if result:
-        print(result)
-    else:
-        print("Invalid URL")
-
-data()
-
 urlpatterns = [
     path("", include('candidato.urls')),
     path("auths/", include("auths.urls")),
