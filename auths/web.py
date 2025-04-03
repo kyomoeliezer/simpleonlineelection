@@ -297,7 +297,8 @@ class Auths:
                     logout_time=datetime.now()
                 )
                 # builtin function for session destroy
-        auth_logout(request)
+        #auth_logout(request)
+        logout(request)
 
         return redirect(reverse('login_user'))
 
