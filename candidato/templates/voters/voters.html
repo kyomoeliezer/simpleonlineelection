@@ -25,11 +25,13 @@
                                     <th > # </th>
                                     <th >MEMNO</th>
                                     <th > NAME </th>
+                                    <th> YUPO KWENYE MKUTANO </th>
           						  <th>  MOBILE</th>
                                       <th>  MOBILE2</th>
                                       <th> CHAIR </th>
                                       <th> BOARD </th>
                                       <th> COMMITTEE </th>
+
                                       <th>  </th>
                                      <th>  </th>
 
@@ -41,6 +43,7 @@
                                     <td style="width:10%;"> {{forloop.counter}} </td>
                                     <td > {{li.memberNo}}</td>
                                     <td > {{li.name}}</td>
+                                    <td >{% if li.is_attended %} YUPO<br/> {{li.attended_at}} {% endif %}</td>
                                       <td > {{li.mobile}}</td>
                                       <td >{% if li.mobile2 %} {{li.mobile2}}{% endif %}</td>
                                     <td></td>
