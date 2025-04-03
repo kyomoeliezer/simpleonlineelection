@@ -24,7 +24,7 @@
             </div>
             {% else %}
             <div class="alert alert-info">
-             <a class="btn btn-primary" href="javascript:;" onclick="{% url 'attend_a_meeting' pk=voter.id %}">Bofya KUINGIA KWENYE MKUTANO</a>
+             <a class="btn btn-primary" href="javascript:;" onclick="modal_general('{% url 'attend_a_meeting' pk=voter.id %}','Je Unataka Kuingia Kwenye mkutano? ');">Bofya KUINGIA KWENYE MKUTANO</a>
              </div>
             {% endif %}
             </div>
