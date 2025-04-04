@@ -21,6 +21,7 @@ def percentage(vt1,totalV,which):
 
 @register.simple_tag
 def published():
+    return None
 
     if Publishing.objects.first():
         return Publishing.objects.first()

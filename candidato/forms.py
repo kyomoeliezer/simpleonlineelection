@@ -106,6 +106,11 @@ class UpdateVoterForm(forms.ModelForm):
     class Meta:
         model=Voter
         fields=['memberNo','name','mobile','mobile2']
+class UpdateVoterEditForm(forms.ModelForm):
+    mobile2=forms.CharField(required=False)
+    class Meta:
+        model=Voter
+        fields=['memberNo','name','mobile','mobile2','is_special']
 
 
 class VoterImport(forms.ModelForm):

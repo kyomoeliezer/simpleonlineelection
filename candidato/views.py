@@ -347,7 +347,7 @@ class VotersUpdateView(LoginRequiredMixin,UpdateView):
     model = Voter
     redirect_field_name = 'next'
     login_url = reverse_lazy('login_user')
-    template_name = 'voters/new_voter.html'
+    template_name = 'voters/update_voter.html'
     form_class=UpdateVoterForm
     header = 'Update Mpiga Kura'
     success_url = reverse_lazy('voters')

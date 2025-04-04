@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+
+              <div class="col-md-8 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="header"><strong>{{header|upper}}</strong></div>
+                  </div>
+                  <div class="card-body">
+                    <form action="" method="post">
+                      {% csrf_token %}
+                        {% if error %}
+                        <div class="row ">
+                            <div class="alert alert-danger">
+                                <p>{{error}}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{form.memberNo|as_crispy_field}}
+                              </div>
+                            <div class="col-md-6">
+                                {{form.name|as_crispy_field}}
+                              </div>
+                                <div class="col-md-6">
+                                {{form.mobile|as_crispy_field}}
+                              </div>
+                                <div class="col-md-6">
+                                {{form.mobile2|as_crispy_field}}
+                              </div>
+                            <div class="col-md-6">
+                                {{form.is_special|as_crispy_field}}
+                              </div>
+                            </div>
+
+                    <div class="col-6">
+                            <button type="submit" class="btn btn-primary float-right" >Save Now</button>
+                         </div>
+                    </form>
+
+                  </div>
+
+                </div>
+              </div>
+
+
+{% endblock %}

@@ -60,6 +60,7 @@ class Voter(BaseDB):
     is_attended = models.BooleanField(default=False)
     attended_at = models.DateTimeField(null=True)
     is_on_meetin_option = models.BooleanField(default=True)
+    is_special = models.BooleanField(default=False)
     def __str__(self):
         return (str(self.memberNo)+' '+self.name).upper()
 
@@ -79,5 +80,7 @@ class Publishing(BaseDB):
     publish_board_result = models.BooleanField(default=False)
     publish_committee_result = models.BooleanField(default=False)
     publish_chair_result = models.BooleanField(default=False)
+    end_attendance_time = models.DateTimeField(null=True)
+    open_for_special_only=models.BooleanField(default=False)
     def __str__(self):
         return self.publish_board_result
