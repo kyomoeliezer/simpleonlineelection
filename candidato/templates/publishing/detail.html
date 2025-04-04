@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+{% load tags %}
+{% load crispy_forms_tags %}
+ <div class="col-lg-7 grid-margin stretch-card">
+
+                <div class="card">
+                  <div class="card-header">
+                    <div class="header"><strong>SETTINGS</strong></div>
+                  </div>
+                    <div class="float-right">
+
+                      <a href="{% url 'import_board' %}" class="btn btn-primary float-right">Import</a>
+                    </div>
+                  <div class="card-body">
+
+          					<h4 class="card-title">Total Votes: {% vota %}</h4>
+          					<div class="table-responsive">
+                              <table class="table table-bordered tbl" >
+                                <thead>
+                                 <tr>
+                                    <th colspan="2" style="width:20%;">ATTENDANCE <br/>
+                                        <br/><br/>
+                                        START TIME: {% if li.start_attendance_time %} {{li.start_attendance_time}}{% else %} NOTE SET{% endif %}<br/><br/>
+                                        END  TIME:  {% if li.end_attendance_time %} {{li.end_attendance_time}}{% else %} NOTE SET{% endif %}<br/><br/>
+                                       {% if li.end_attendance_time %} For {% if li.open_for_special_only %}ONLY SPECIAL {% else %} ALL VOTERS {% endif %}{% endif %}
+
+                                  </tr>
+                                  <tr>
+
+                                    <th style="width:20%;">Matokeo Bodi</th>
+                                    <th style="width:50%;"><a href="javascript:;" onclick="modal_common('{% url 'pub_bodi' %}');" class="btn btn-info float-left">{% if pub.publish_board_result %} YAMESHACHAPISHWA   <a class="btn btn-info" href="">ANGALIA</a> {% else %} TANGAZA {% endif %} </a> </th>
+                                  </tr>
+                                <tr>
+                                    <th style="width:20%;">Matokeo Kamati</th>
+                                    <th style="width:50%;"> </th>
+
+                                </tr>
+                                 <tr>
+                                    <th style="width:20%;">Matokeo Mwenyekiti/Msaidizi</th>
+                                    <th style="width:50%;"> </th>
+
+                                  </tr>
+
+
+                                </thead>
+
+                              </table>
+          					</div>
+                  </div>
+                </div>
+              </div>
+
+
+{% endblock %}

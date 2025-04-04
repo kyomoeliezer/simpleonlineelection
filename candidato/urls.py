@@ -47,6 +47,13 @@ urlpatterns=[
     re_path(r'^pubbodi', PublishUnPublishBodiView.as_view(), name="pub_bodi"),
     re_path(r'^pubkamati', PublishUnPublishCommitteeView.as_view(), name="pub_kamati"),
     re_path(r'^cpubchair', PublishUnPublishChairView.as_view(), name="pub_chair"),
+    re_path(r'^publishing/detail', Settings.as_view(), name="settings"),
+    re_path(r'^jaza-matokeo', TangazoMatokeoYaBodi.as_view(), name="tangaza_bodi"),
+    re_path(r'^(?P<pk>[0-9]+)/update-jaza-matokeo', TangazoMatokeoYaBodiUpdate.as_view(), name="tangaza_bodi_update"),
+    re_path(r'^(?P<pk>[0-9]+)/delete-jaza-matokeo', TangazoMatokeoYaBodiDelete.as_view(), name="tangaza_bodi_delete"),
+
+
+
 
 
     path("", Dashboard.as_view(), name="dashboard"),

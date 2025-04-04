@@ -348,7 +348,7 @@ class VotersUpdateView(LoginRequiredMixin,UpdateView):
     redirect_field_name = 'next'
     login_url = reverse_lazy('login_user')
     template_name = 'voters/update_voter.html'
-    form_class=UpdateVoterForm
+    form_class=UpdateVoterEditForm
     header = 'Update Mpiga Kura'
     success_url = reverse_lazy('voters')
 
@@ -395,6 +395,11 @@ class VotersUpdateView(LoginRequiredMixin,UpdateView):
                     username=memberNo,name=name,
                 mobile = mobile
                 )
+            if request.POST.get('is_special'):
+                Voter.objects.filter(id=self.kwargs['pk']).update(is_special=True)
+            else:
+                Voter.objects.filter(id=self.kwargs['pk']).update(is_special=False)
+
             messages.success(request, 'Succes!, Umejaza taarifa za  mgombea wa board')
 
             return redirect(reverse('voters'))
@@ -780,6 +785,8 @@ class MatokeoBoard(LoginRequiredMixin,View):
     template_name='matokeo/board_matokeo.html'
     def get(self,request,*args,**kwargs):
         context={}
+        context['matokeo']=Matokeo.objects.filter(which='Bodi').order_by('-created_on')
+
         context['boardAll']=BoardVote.objects.aggregate(countT=Count('voter_id',distinct=True))['countT']
 
         context['board']=BoardCandidate.objects.values(
@@ -916,3 +923,56 @@ class PublishUnPublishChairView(LoginRequiredMixin,View):
         return redirect(reverse('matokeo_chair'))
 
 
+class Settings(LoginRequiredMixin,View):
+    login_url = reverse_lazy('login_user')
+    redirect_field_name = 'next'
+    template_name='publishing/detail.html'
+
+    def get(self,request,*args,**kwargs):
+        pub=Publishing.objects.first()
+        return render(request,self.template_name,{'li':pub})
+
+class TangazoMatokeoYaBodi(LoginRequiredMixin,CreateView):
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    model = Matokeo
+    context_object_name = 'form'
+    form_class=ChapishaMatokeoBoardForm
+    template_name = 'matokeo/tangaza_bodi.html'
+    def get_context_data(self, **kwargs):
+        kwargs['header']='Tangaza Matokeo'
+        return super().get_context_data(**kwargs)
+
+    def post(self,request, *args,**kwargs ):
+
+        form = self.form_class(request.POST,request.FILES)
+        if form.is_valid():
+            form1=form.save(commit=False)
+            form1.which='Bodi'
+            form1.save()
+            messages.success(request, 'Umefanikiwa! kutanagaza matokeo ya bodi')
+            return redirect('matokeo_bodi')
+        else:
+            return render(request,self.template_name,{'form':form,'header':''})
+class TangazoMatokeoYaBodiUpdate(LoginRequiredMixin,UpdateView):
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    model = Matokeo
+    context_object_name = 'form'
+    form_class=ChapishaMatokeoBoardForm
+    template_name = 'matokeo/tangaza_bodi.html'
+    success_url=reverse_lazy('matokeo_bodi')
+    def get_context_data(self, **kwargs):
+        kwargs['header']='Tangaza Matokeo'
+        return super().get_context_data(**kwargs)
+
+
+class TangazoMatokeoYaBodiDelete(LoginRequiredMixin,View):
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    model = Matokeo
+    context_object_name = 'form'
+
+    def get(self,*args, **kwargs):
+        matok=Matokeo.objects.filter(id=self.kwargs['pk']).delete()
+        return redirect(reverse('matokeo_bodi'))

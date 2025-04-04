@@ -1,6 +1,15 @@
 from candidato.models import *
 from django.db.models import *
 from django import forms
+from django.forms import ValidationError
+def validate_file_extension(value):
+  import os
+  ext = os.path.splitext(value.name)[1]
+  valid_extensions = ['.pdf','.pdf']
+  if not ext in valid_extensions:
+    raise ValidationError(u' only .PDF file are allowed !')
+
+
 class AddBoardCandidateForm(forms.ModelForm):
     class Meta:
         model=BoardCandidate
@@ -120,4 +129,24 @@ class VoterImport(forms.ModelForm):
     class Meta:
         model = Voter
         fields = ["memberNo", ]
+
+class ChapishaMatokeoBoardForm(forms.ModelForm):
+    bodi_file=forms.FileField(label='Weka Attachment',validators=[validate_file_extension],required=True,widget=forms.FileInput(attrs={'accept':'application/pdf'}))
+    class Meta:
+        model = Matokeo
+        fields = ["title",'maelezo','bodi_file' ]
+
+class ChapishaMatokeoKamatiForm(forms.ModelForm):
+    kamati_file=forms.FileField(label='Weka Attachment',required=False,widget=forms.FileInput(attrs={'accept':'application/csv'}))
+
+    class Meta:
+        model = Matokeo
+        fields = ["title",'maelezo' ]
+
+class ChapishaMatokeoMKitiForm(forms.ModelForm):
+    mkiti_file=forms.FileField(label='Weka Attachment',required=False,widget=forms.FileInput(attrs={'accept':'application/csv'}))
+
+    class Meta:
+        model = Matokeo
+        fields = ["title",'maelezo' ]
 

@@ -351,7 +351,10 @@ class MatokeoVBoard(LoginRequiredMixin,View):
     template_name='matokeov/board_matokeo.html'
     def get(self,request,*args,**kwargs):
         context={}
+
         context['pub'] = Publishing.objects.first()
+        context['matokeo'] = Matokeo.objects.filter(is_published=True,which='Bodi').order_by('-created_on')
+
         context['boardAll']=BoardVote.objects.aggregate(countT=Count('voter_id',distinct=True))['countT']
 
         context['board']=BoardCandidate.objects.values(
