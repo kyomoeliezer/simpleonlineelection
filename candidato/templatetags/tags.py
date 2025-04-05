@@ -36,3 +36,13 @@ def chair_votes(id):
 def vise_votes(id):
     return ChairVote.objects.filter(vise_id=id).count()
 
+@register.simple_tag
+def voting_opened_for():
+    pub = Publishing.objects.first()
+    if pub.startVoting:
+        return pub.open_voting_for
+    else:
+        return ' bb'
+
+
+

@@ -155,7 +155,7 @@ class Attendance_SettingForm(forms.ModelForm):
 
     class Meta:
         model = Publishing
-        fields = ["start_attendance_time",'end_attendance_time','open_for_special_only' ]
+        fields = ["start_attendance_time",'end_attendance_time','open_for_special_only','stopAttendance','open_voting_for','startVoting' ]
 
 class VotingTimeSetting_SettingForm(forms.ModelForm):
 

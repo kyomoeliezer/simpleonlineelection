@@ -5,6 +5,7 @@
 {% block content %}
 {% load crispy_forms_tags %}
 {% published as pub %}
+{% voting_opened_for  as whichVote %}
 
     <div class="col-md-12 " style="padding:30px;">
 
@@ -34,7 +35,7 @@
 
           </div>
             <div class="col-md-4  align-middle" >
-                {% if not board %} <a href="{% url 'chagua_bodi' %}" ><button class="btn btn-primary col-md-12  align-middle">CHAGUA</button></a>
+                {% if not board %}{% if  'Bodi' in whichVote %} <a href="{% url 'chagua_bodi' %}" ><button class="btn btn-primary col-md-12  align-middle">  CHAGUA </button></a>{% else %}<span class="btn btn-danger" >BADO</span> {% endif %}
                {% else %} {% if pub.publish_board_result %}<a href="{% url 'matokeo_voter_bodi' %}"><button type="button" class="btn btn-outline-primary">MATOKEO</button> </a> {% else %} <a href="{% url 'bodi_yako' %}" ><button class="btn btn-warning col-md-12  align-middle">UMESHAPIGA, ANGALIA </button></a>
                 {% endif %} {% endif %}
             </div>
@@ -58,7 +59,10 @@
 
           </div>
            <div class="col-md-4  align-middle" >
-               {% if not committee %} <a href="{% url 'chagua_kamati' %}" ><button class="btn btn-primary col-md-12  align-middle">CHAGUA</button></a>
+               {% if not committee %}
+               {% if  'Kamati' in whichVote %} <a href="{% url 'chagua_kamati' %}" ><button class="btn btn-primary col-md-12  align-middle">  CHAGUA </button></a>{% else %}<span class="btn btn-danger" >BADO</span> {% endif %}
+
+
                {% else %} {% if pub.publish_committee_result %} <a href="{% url 'matokeo_voter_kamati' %}"> <button type="button" class="btn btn-outline-warning">MATOKEO</button></a> {% else %}<a href="{% url 'kamati_yako' %}" ><button class="btn btn-primary col-md-12  align-middle">VIEW</button></a>
                 {% endif %}{% endif %}
             </div>
@@ -83,7 +87,9 @@
 
               </div>
                 <div class="col-md-4  align-middle" >
-              {% if not chair %}  <a href="{% url 'chagua_mwenyeviti' %}" ><button class="btn btn-primary col-md-12  align-middle">CHAGUA</button></a>
+              {% if not chair %}
+
+                     {% if  'Mwenyekiti' in whichVote %} <a href="{% url 'chagua_mwenyeviti' %}" ><button class="btn btn-primary col-md-12  align-middle">  CHAGUA </button></a>{% else %}<span class="btn btn-danger" >BADO</span> {% endif %}
               {% else %} {% if pub.publish_chair_result %}  <a href="{% url 'matokeo_voter_mwenyekiti' %}"> <button type="button" class="btn btn-outline-info">MATOKEO</button></a>{% else %} <a href="{% url 'wenyeviti_wako' %}" ><button class="btn btn-info col-md-12  align-middle">VIEW</button></a>
                {% endif %} {% endif %}
             </div>

@@ -717,8 +717,23 @@ class LoginCode(View):
         code=request.POST.get('username')
         code=code.strip()
         if form.is_valid():
+            pub = Publishing.objects.first()
+            pass1=None
+            if pub.stopAttendance:
+                user1=User.objects.filter(username__iexact=code).first()
+                mtu1=User.objects.filter(username__iexact=code).exists()
+                voter=Voter.objects.filter(is_attended=True,user=user1).exists()
+                if voter:
+                    pass1=True
 
-            if User.objects.filter(username__iexact=code).exists():
+            else:
+                user1 = User.objects.filter(username__iexact=code).first()
+                mtu1 = User.objects.filter(username__iexact=code).exists()
+                pass1 = True
+
+
+
+            if mtu1 and pass1:
 
                 user= User.objects.filter(username__iexact=code).first()
                 voterE = Voter.objects.filter(user_id=user.id,is_on_meetin_option=True).exists()
@@ -726,7 +741,7 @@ class LoginCode(View):
                 if 'demouser2' in user.username:
                     login(request,user)
                     return redirect(reverse('dashboard'))
-                pub=Publishing.objects.first()
+
 
                 if user.mobile:
                     mocodeshort=(user.mobile)[-4:]
@@ -736,7 +751,7 @@ class LoginCode(View):
                 #return redirect(url)
 
             else:
-                message='Namba('+str(code)+') hii haijasajiliwa'
+                message='Namba('+str(code)+') either hii haijasajiliwa au umechelewa kuingia kwenye mkutano'
                 return render(request, self.template_name, {'form': form,'error':message})
 
         return render(request, self.template_name, {'form': form})

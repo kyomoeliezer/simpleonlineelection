@@ -24,9 +24,6 @@ from election import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
-if not Publishing.objects.first():
-    Publishing.objects.create()
-
 
 urlpatterns = [
     path("", include('candidato.urls')),

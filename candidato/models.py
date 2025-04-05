@@ -143,6 +143,7 @@ class Publishing(BaseDB):
     voting_start_time=models.DateTimeField(null=True)
     voting_end_time=models.DateTimeField(null=True)
     stopAttendance=models.BooleanField(default=False)
+    startVoting = models.BooleanField(default=False)
     def __str__(self):
         return self.publish_board_result
 

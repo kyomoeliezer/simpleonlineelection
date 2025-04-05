@@ -4,6 +4,7 @@
 {% block content %}
 {% load tags %}
 {% load crispy_forms_tags %}
+{% voting_opened_for  as whichVote %}
  <div class="col-lg-7 grid-margin stretch-card">
 
                 <div class="card">
@@ -27,7 +28,12 @@
                                         END  TIME:  {% if li.end_attendance_time %} {{li.end_attendance_time}}{% else %} NOTE SET{% endif %}<br/><br/>
                                        {% if li.end_attendance_time %} For {% if li.open_for_special_only %}ONLY SPECIAL {% else %} ALL VOTERS {% endif %}{% endif %}
                                       <br/><br/>  <a href="{% url 'set_attendance' pk=li.id %}" class="btn btn-warning">SET</a>
-                                  </tr>
+<BR/>
+                                 <span>{% if not li.stopAttendance %} ALLOWED ATTENDANCE {% else %} STOPPED ATTENDANCE {% endif %}
+                                     <br>
+                                     Tunachagua: {{whichVote}}
+
+                                 </tr>
                                  <tr><th><br/><br/></th></tr>
                                 <tr style="background-color:#e5e5e5;">
                                     <th colspan="2" style="width:20%;">CURRENT VOTING:<span class="badge badge-outline-warning">{% if  li.open_voting_for %} {{li.open_voting_for}} {% endif %}</span>  <br/>
