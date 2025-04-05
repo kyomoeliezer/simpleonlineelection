@@ -131,7 +131,7 @@ class UpdateUserCvB(LoginRequiredMixin,UpdateView):
 
     def get_context_data(self, **kwargs):
         context=super().get_context_data()
-        context['header']=User.objects.filter(id=self.kwargs['pk']).first().username+'-'+User.objects.filter(id=self.kwargs['pk']).first().name
+        context['header']=User.objects.filter(id=self.kwargs['pk']).first().username+'-'
         context['is_on_admin']=True
         return context
 
