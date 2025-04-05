@@ -8,7 +8,7 @@ register = template.Library()
 
 @register.simple_tag
 def vota():
-    return Voter.objects.all().count()
+    return Voter.objects.filter(is_attended=True).count()
 
 @register.simple_tag
 def percentage(vt1,totalV,which):
