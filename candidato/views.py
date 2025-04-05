@@ -419,6 +419,7 @@ class VotersView(LoginRequiredMixin,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context['lists'] =Voter.objects.all().order_by('memberNo')
+        context['listsattended'] = Voter.objects.filter(is_attended=True).count()
         context['header']=self.header
         return context
 
