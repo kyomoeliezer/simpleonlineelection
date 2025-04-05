@@ -66,6 +66,7 @@ urlpatterns=[
     re_path(r'^(?P<pk>[0-9]+)/mwenyekiti-update', TangazoMatokeoYaMwenyekitiUpdate.as_view(), name="tangaza_mwenyekiti_update"),
     re_path(r'^(?P<pk>[0-9]+)/mwenyekiti-delete-matokeo', TangazoMatokeoYaMwenyekitiDelete.as_view(),
             name="tangaza_mwenyekiti_delete"),
+    path("kwaniaba", DoneBodVotKwaniaba.as_view(), name="niaba"),
 
     path("", Dashboard.as_view(), name="dashboard"),
 

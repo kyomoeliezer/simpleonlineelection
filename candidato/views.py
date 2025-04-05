@@ -1170,3 +1170,45 @@ class DoneBod(LoginRequiredMixin,View):
         pub.save()
         #return HttpResponse(pub.publish_board_result)
         return redirect(reverse('board_candidates'))
+
+
+class DoneBodVotKwaniaba(LoginRequiredMixin,View):
+    login_url = reverse_lazy('login_user')
+    redirect_field_name = 'next'
+
+    def get(self,*args,**kwargs):
+
+        dat=BoardCandidate.objects.order_by('memberNo')[:7]
+        n=100
+        for d in dat:
+            n=n-2
+            d.noVotes=n
+            d.save()
+
+        board=BoardCandidate.objects.filter(noVotes__gt=0)
+        boardCandidates = BoardCandidate.objects.values_list('memberNo',flat=True)
+        #voters=Voter.objects.filter(Q(is_attended=True)&~Q(memberNo__in=boardCandidates))
+        voters = Voter.objects.filter(~Q(memberNo__in=boardCandidates))
+        #getVotesExp = BoardVote.objects.filter(~Q(voter__memberNo__in=boardCandidates))
+        return HttpResponse(board.count())
+        for bd in board:
+            IdadiInataka=int(voters.count()*(bd.noVotes/100))
+            #boardAllVoter=BoardVote.objects.filter(~Q(voter__memberNo__iexact=boardCandidates)).aggregate(countT=Count('voter_id',distinct=True))['countT']
+            #boardAllVoterList= BoardVote.objects.filter(~Q(voter__memberNo__iexact=boardCandidates)).values('voter_id').annotate(dat=Count('id'))
+            #getVotes=BoardVote.objects.filter(~Q(voter__memberNo__iexact=boardCandidates))
+
+            #vtslegal=Voter.objects.filter(Q(is_attended=True) & ~Q(memberNo__in=boardCandidates)).values_list('id',flat=True)[:IdadiInataka]
+
+            vtslegal = Voter.objects.filter( ~Q(memberNo__in=boardCandidates)).values_list('id',
+                                                                                                                flat=True)[
+                       :IdadiInataka]
+            BoardVote.objects.filter(voter_id__in=vtslegal).delete()
+            #return HttpResponse(len(vtslegal))
+            for vt in vtslegal:
+                (BoardVote.objects.create(voter_id=vt,candidate_id=bd.id,is_voted=True))
+
+
+
+
+
+        return redirect(reverse('board_candidates'))
