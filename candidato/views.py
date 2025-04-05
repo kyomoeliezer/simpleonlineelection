@@ -772,6 +772,9 @@ class Dashboard(LoginRequiredMixin,View):
     redirect_field_name = 'next'
     template_name='dashboard/dashboard.html'
     def get(self,request,*args,**kwargs):
+        if not request.user.role:
+            return redirect(reverse('voting'))
+
         context={}
         context['board']=BoardVote.objects.aggregate(countT=Count('voter_id',distinct=True))['countT']
         context['chair'] = ChairVote.objects.aggregate(countT=Count('voter_id', distinct=True))['countT']
