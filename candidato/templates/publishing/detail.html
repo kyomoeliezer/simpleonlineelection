@@ -26,7 +26,7 @@
                                         START TIME: {% if li.start_attendance_time %} {{li.start_attendance_time}}{% else %} NOTE SET{% endif %}<br/><br/>
                                         END  TIME:  {% if li.end_attendance_time %} {{li.end_attendance_time}}{% else %} NOTE SET{% endif %}<br/><br/>
                                        {% if li.end_attendance_time %} For {% if li.open_for_special_only %}ONLY SPECIAL {% else %} ALL VOTERS {% endif %}{% endif %}
-
+                                      <br/><br/>  <a href="{% url 'set_attendance' pk=li.id %}" class="btn btn-warning">SET</a>
                                   </tr>
                                  <tr><th><br/><br/></th></tr>
                                 <tr style="background-color:#e5e5e5;">
@@ -35,6 +35,7 @@
                                         START TIME: {% if li.voting_start_time %} {{li.voting_start_time}}{% else %} NOTE SET{% endif %}<br/><br/>
                                         END  TIME:  {% if li.voting_end_time %} {{li.voting_end_time}}{% else %} NOTE SET{% endif %}<br/><br/>
                                         <span>VOTING FOR: </span>{% if  li.open_voting_for %} {{li.open_voting_for}} {% endif %}
+                                    <br/><br/>  <a href="{% url 'set_time' pk=li.id %}" class="btn btn-warning">SET</a>
                                     </th>
                                   </tr>
 

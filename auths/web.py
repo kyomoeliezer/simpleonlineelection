@@ -13,7 +13,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.views import View
 from auths import models
 from django.contrib.auth import login,logout # ,authenticate
-
+from candidato.models import Publishing
 from auths.custombackend import authenticate as authenticate_user
 from auths.forms import PasswordForm, RoleEditForm,RoleForm, StaffForm,UserForm,PermissionForm,UserUpdateFormPass,CustomAuthenticationForm,CustomAuthCodeForm
 from auths.models import DefaultPassword, LoginLog, Role, User,CustPermission
@@ -23,6 +23,7 @@ from auths.views import User as auth_user
 from auths.views import import_roles
 from django.core.paginator import Paginator
 from django.contrib import messages
+from candidato.models import Voter
 from django.db.models import  Q
 import psycopg2
 class dotdict(dict):
@@ -714,21 +715,26 @@ class LoginCode(View):
     def post(self, request):
         form = self.form_class(request.POST)
         code=request.POST.get('username')
-
+        code=code.strip()
         if form.is_valid():
 
             if User.objects.filter(username__iexact=code).exists():
+
                 user= User.objects.filter(username__iexact=code).first()
+                voterE = Voter.objects.filter(user_id=user.id,is_on_meetin_option=True).exists()
                 #url=reverse_lazy('mob_auth_code')+'?code='+str(code)
                 if 'demouser' in user.username:
                     login(request,user)
                     return redirect(reverse('dashboard'))
+                pub=Publishing.objects.first()
+
                 if user.mobile:
                     mocodeshort=(user.mobile)[-4:]
                 else:
                     mocodeshort=''
                 return render(request,self.template_name_otp,{'user':user,'mobcode':mocodeshort})
                 #return redirect(url)
+
             else:
                 message='Namba('+str(code)+') hii haijasajiliwa'
                 return render(request, self.template_name, {'form': form,'error':message})

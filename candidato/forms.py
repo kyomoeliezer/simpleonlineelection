@@ -151,13 +151,13 @@ class ChapishaMatokeoMKitiForm(forms.ModelForm):
         fields = ["title",'maelezo','mkiti_file' ]
 
 
-class Attendance_Setting(forms.ModelForm):
+class Attendance_SettingForm(forms.ModelForm):
 
     class Meta:
         model = Publishing
         fields = ["start_attendance_time",'end_attendance_time','open_for_special_only' ]
 
-class VotingTimeSetting_Setting(forms.ModelForm):
+class VotingTimeSetting_SettingForm(forms.ModelForm):
 
     class Meta:
         model = Publishing

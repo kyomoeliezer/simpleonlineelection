@@ -957,11 +957,24 @@ class SetAttendanceTimeUpdate(LoginRequiredMixin,UpdateView):
     login_url = reverse_lazy('login_user')
     model = Matokeo
     context_object_name = 'form'
-    form_class=Attendance_Setting
+    form_class=Attendance_SettingForm
     template_name = 'publishing/set_time_attendance.html'
     success_url=reverse_lazy('settings')
     def get_context_data(self, **kwargs):
         kwargs['header']='SET TIME FOR ATTENDANCE'
+        return super().get_context_data(**kwargs)
+
+
+class SetMuda(LoginRequiredMixin,UpdateView):
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    model = Matokeo
+    context_object_name = 'form'
+    form_class=VotingTimeSetting_SettingForm
+    template_name = 'publishing/set_time.html'
+    success_url=reverse_lazy('settings')
+    def get_context_data(self, **kwargs):
+        kwargs['header']='SET TIME VOTING TIME'
         return super().get_context_data(**kwargs)
 
 class TangazoMatokeoYaBodi(LoginRequiredMixin,CreateView):
@@ -1118,4 +1131,28 @@ class TangazoMatokeoYaMwenyekitiDelete(LoginRequiredMixin,View):
         matok=Matokeo.objects.filter(id=self.kwargs['pk']).delete()
         return redirect(reverse('matokeo_mwenyekiti'))
 
+
+class SetMudaWaAttendance(LoginRequiredMixin,UpdateView):
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    model = Publishing
+    context_object_name = 'form'
+    form_class=Attendance_SettingForm
+    template_name = 'publishing/set_time_attendance.html'
+    success_url=reverse_lazy('settings')
+    def get_context_data(self, **kwargs):
+        kwargs['header']='Set Attendance Time'
+        return super().get_context_data(**kwargs)
+
+class SetMuda(LoginRequiredMixin,UpdateView):
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    model = Publishing
+    context_object_name = 'form'
+    form_class=VotingTimeSetting_SettingForm
+    template_name = 'publishing/set_time.html'
+    success_url=reverse_lazy('settings')
+    def get_context_data(self, **kwargs):
+        kwargs['header']='Tangaza Matokeo'
+        return super().get_context_data(**kwargs)
 

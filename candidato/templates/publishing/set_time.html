@@ -33,20 +33,17 @@
                         <div class="row">
 
                             <div class="col-md-6">
-                                <label>Attendance Start Time</label>
-                                 <input name="start_attendance_time" type="datetime-local" id="birthdaytime" name="birthdaytime">
+                                 <input name="voting_start_time" type="datetime-local" id="birthdaytime" name="birthdaytime">
 
                             </div>
 
                             <div class="col-md-6">
-                                <label>Attendance END Time</label>
+                                 <input name="voting_end_time" type="datetime-local" id="birthdaytime" name="birthdaytime">
 
-                                 <input name="end_attendance_time" type="datetime-local" id="birthdaytime" name="birthdaytime">
                             </div>
 
                             <div class="col-md-6">
-                                {{form.open_for_special_only|as_crispy_field}}
-
+                                {{form.open_voting_for|as_crispy_field}}
                             </div>
 
                         </div>
