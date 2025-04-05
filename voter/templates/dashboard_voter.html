@@ -17,7 +17,7 @@
 
         <div class="col-md-12">
             <div class="alert alert-success">
-                {% if voter.is_attended %} UPO KWENYE MKUTANO KUANZIA SAA {{voter.attended_at|date:'H:i:s'}} {% else %} <a href="javascript:;" onclick="">Bofya KUINGIA KWENYE MKUTANO</a>{% endif %}
+                {% if voter.is_attended %} UPO KWENYE MKUTANO KUANZIA SAA {{voter.attended_at|date:'H:i:s'}} {% else %} <a class="btn btn-primary" href="javascript:;" onclick="modal_general('{% url 'attend_a_meeting' pk=voter.id %}','Je Unataka Kuingia Kwenye mkutano? ');">Bofya KUINGIA KWENYE MKUTANO</a>{% endif %}
             </div>
         </div>
 
