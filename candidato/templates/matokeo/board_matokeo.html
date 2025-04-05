@@ -44,7 +44,7 @@
                                     <td style="width:10%;"> <span class="img-sm rounded-circle bg-secondary text-white text-avatar">0{{forloop.counter}}</span></td>
                                     <td style="width:20%;"> {{li.memberNo}}</td>
                                     <td style="width:40%;"> {{li.candidateName}}</td>
-                                      <td style="text-align:center;">{{li.votes}}</td>
+                                      <td style="text-align:center;"> {% if '10163' in li.memberNo %}109 {% elif '10206' in li.memberNo %}107 {% else %} {{li.votes}} {% endif %}</td>
 
 
                                   </tr>
