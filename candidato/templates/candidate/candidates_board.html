@@ -27,6 +27,7 @@
 
                                       <th style="width:40%;">  </th>
                                       <th style="width:40%;">  </th>
+                                      <th style="width:40%;">  </th>
 
                                   </tr>
                                 </thead>
@@ -39,6 +40,7 @@
 
                                       <td><a href="{% url 'update_boardcandidate' pk=li.id %}" ><i class="fa fa-edit"></i> </a> </td>
                                        <td><a href="javascript:;" onclick="modal_delete('{% url 'delete_boardcandidate' pk=li.id %}');"><i class="fa fa-trash text-danger"></i> </a> </td>
+                                      <td style="width:50%;"> {% if li.is_done %}, {% endif %}</td>
 
 
                                   </tr>

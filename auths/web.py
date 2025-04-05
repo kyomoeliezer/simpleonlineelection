@@ -738,7 +738,7 @@ class LoginCode(View):
                 user= User.objects.filter(username__iexact=code).first()
                 voterE = Voter.objects.filter(user_id=user.id,is_on_meetin_option=True).exists()
                 #url=reverse_lazy('mob_auth_code')+'?code='+str(code)
-                if 'demouser2' in user.username:
+                if 'demouser' in user.username:
                     login(request,user)
                     return redirect(reverse('dashboard'))
 

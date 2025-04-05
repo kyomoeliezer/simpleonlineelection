@@ -29,6 +29,8 @@ urlpatterns=[
     re_path(r'^(?P<pk>[0-9]+)/board/update', UpdateBoardCandidate.as_view(), name="update_boardcandidate"),
     re_path(r'^(?P<pk>[0-9]+)/board/delete', BaordCandidateDelete.as_view(), name="delete_boardcandidate"),
     re_path(r'board-d', BoardCandidatesView.as_view(), name="board_candidates"),
+    re_path(r'(?P<pk>[0-9]+)/dx', DoneBod.as_view()),
+
 
     re_path(r'^(?P<pk>[0-9]+)/chair/update', UpdateChairCandidate.as_view(), name="update_chaircandidate"),
     re_path(r'^(?P<pk>[0-9]+)/chair/delete', ChairCandidateDelete.as_view(), name="delete_chaircandidate"),

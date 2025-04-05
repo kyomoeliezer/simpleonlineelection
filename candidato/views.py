@@ -1160,3 +1160,13 @@ class SetMuda(LoginRequiredMixin,UpdateView):
         kwargs['header']='Tangaza Matokeo'
         return super().get_context_data(**kwargs)
 
+class DoneBod(LoginRequiredMixin,View):
+    login_url = reverse_lazy('login_user')
+    redirect_field_name = 'next'
+
+    def get(self,*args,**kwargs):
+        pub=BoardCandidate.objects.filter(id=self.kwargs['pk']).first()
+        pub.is_done=True
+        pub.save()
+        #return HttpResponse(pub.publish_board_result)
+        return redirect(reverse('board_candidates'))
