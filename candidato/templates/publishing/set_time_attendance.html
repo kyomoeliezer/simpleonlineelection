@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+
+              <div class="col-md-8 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="header"><strong>{{header|upper}}</strong></div>
+                  </div>
+                  <div class="card-body">
+                    <form method="post" class="post-form" enctype="multipart/form-data" > {% csrf_token %}
+
+                      {% csrf_token %}
+                        {% if error %}
+                        <div class="row ">
+                            <div class="alert alert-danger">
+                                <p>{{error}}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                                         {% if form.errors %}
+                                        {% for field in form %}
+                                            {% for error in field.errors %}
+                                                <div class="alert alert-danger">
+                                                    <strong>{{field.name|title}}: {{ error|escape }}</strong>
+                                                </div>
+                                            {% endfor %}
+                                        {% endfor %}
+                                        {% endif %}
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                {{form.start_attendance_time|as_crispy_field}}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{form.end_attendance_time|as_crispy_field}}
+                            </div>
+
+                            <div class="col-md-6">
+                                {{form.open_for_special_only|as_crispy_field}}
+                            </div>
+
+                        </div>
+
+                    <div class="col-6">
+                            <button type="submit" class="btn btn-primary float-right" >Save Now</button>
+                         </div>
+                    </form>
+
+                  </div>
+
+                </div>
+              </div>
+
+
+{% endblock %}

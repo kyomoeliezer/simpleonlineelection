@@ -137,16 +137,28 @@ class ChapishaMatokeoBoardForm(forms.ModelForm):
         fields = ["title",'maelezo','bodi_file' ]
 
 class ChapishaMatokeoKamatiForm(forms.ModelForm):
-    kamati_file=forms.FileField(label='Weka Attachment',required=False,widget=forms.FileInput(attrs={'accept':'application/csv'}))
+    kamati_file=forms.FileField(label='Weka Attachment',widget=forms.FileInput(attrs={'accept':'application/pdf'}))
 
     class Meta:
         model = Matokeo
-        fields = ["title",'maelezo' ]
+        fields = ["title",'maelezo','kamati_file' ]
 
 class ChapishaMatokeoMKitiForm(forms.ModelForm):
-    mkiti_file=forms.FileField(label='Weka Attachment',required=False,widget=forms.FileInput(attrs={'accept':'application/csv'}))
+    mkiti_file=forms.FileField(label='Weka Attachment',widget=forms.FileInput(attrs={'accept':'application/pdf'}))
 
     class Meta:
         model = Matokeo
-        fields = ["title",'maelezo' ]
+        fields = ["title",'maelezo','mkiti_file' ]
 
+
+class Attendance_Setting(forms.ModelForm):
+
+    class Meta:
+        model = Publishing
+        fields = ["start_attendance_time",'end_attendance_time','open_for_special_only' ]
+
+class VotingTimeSetting_Setting(forms.ModelForm):
+
+    class Meta:
+        model = Publishing
+        fields = ["voting_start_time",'voting_end_time','open_voting_for' ]

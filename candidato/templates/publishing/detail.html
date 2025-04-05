@@ -28,21 +28,16 @@
                                        {% if li.end_attendance_time %} For {% if li.open_for_special_only %}ONLY SPECIAL {% else %} ALL VOTERS {% endif %}{% endif %}
 
                                   </tr>
-                                  <tr>
-
-                                    <th style="width:20%;">Matokeo Bodi</th>
-                                    <th style="width:50%;"><a href="javascript:;" onclick="modal_common('{% url 'pub_bodi' %}');" class="btn btn-info float-left">{% if pub.publish_board_result %} YAMESHACHAPISHWA   <a class="btn btn-info" href="">ANGALIA</a> {% else %} TANGAZA {% endif %} </a> </th>
+                                 <tr><th><br/><br/></th></tr>
+                                <tr style="background-color:#e5e5e5;">
+                                    <th colspan="2" style="width:20%;">CURRENT VOTING:<span class="badge badge-outline-warning">{% if  li.open_voting_for %} {{li.open_voting_for}} {% endif %}</span>  <br/>
+                                        <br/><br/>
+                                        START TIME: {% if li.voting_start_time %} {{li.voting_start_time}}{% else %} NOTE SET{% endif %}<br/><br/>
+                                        END  TIME:  {% if li.voting_end_time %} {{li.voting_end_time}}{% else %} NOTE SET{% endif %}<br/><br/>
+                                        <span>VOTING FOR: </span>{% if  li.open_voting_for %} {{li.open_voting_for}} {% endif %}
+                                    </th>
                                   </tr>
-                                <tr>
-                                    <th style="width:20%;">Matokeo Kamati</th>
-                                    <th style="width:50%;"> </th>
 
-                                </tr>
-                                 <tr>
-                                    <th style="width:20%;">Matokeo Mwenyekiti/Msaidizi</th>
-                                    <th style="width:50%;"> </th>
-
-                                  </tr>
 
 
                                 </thead>

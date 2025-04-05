@@ -139,6 +139,9 @@ class Publishing(BaseDB):
     start_attendance_time = models.DateTimeField(null=True)
     end_attendance_time = models.DateTimeField(null=True)
     open_for_special_only=models.BooleanField(default=False)
+    open_voting_for=models.CharField(max_length=300,null=True,choices=(('Bodi','Bodi'),('Kamati','Kamati'),('Mwenyekiti','Mwenyekeit')))
+    voting_start_time=models.DateTimeField(null=True)
+    voting_end_time=models.DateTimeField(null=True)
     def __str__(self):
         return self.publish_board_result
 

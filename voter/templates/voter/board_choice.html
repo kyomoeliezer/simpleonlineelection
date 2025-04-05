@@ -20,8 +20,14 @@
 
                   </div>
                       <div class="card-body">
-                        <h4 class="card-title mb-0 text-info"><strong>WAJUMBE WA BODI ULIOWACHAGUA</strong></h4>
+                        <!--<h4 class="card-title mb-0 text-info"><strong>WAJUMBE WA BODI ULIOWACHAGUA</strong></h4>-->
                         <hr style="color:black;">
+                          {% if umeshapiga %}
+                          <span class="badge badge-info">UMESHAPIGA KURA  TAARI</span>
+
+                          {% endif %}
+
+                       {%  comment %}
                         {% for bd in board %}
                         <div class="d-flex mt-3 py-2 border-bottom">
                           <span class="img-sm rounded-circle bg-info text-white text-avatar">0{{forloop.counter}}</span>
@@ -31,7 +37,9 @@
                           </div>
 
                         </div>
+
                         {% endfor %}
+                        {% endcomment %}
 
                       </div>
                     </div>

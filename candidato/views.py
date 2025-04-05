@@ -784,8 +784,9 @@ class MatokeoBoard(LoginRequiredMixin,View):
     redirect_field_name = 'next'
     template_name='matokeo/board_matokeo.html'
     def get(self,request,*args,**kwargs):
+        pub=Publishing.objects.filter()
         context={}
-        context['matokeo']=Matokeo.objects.filter(which='Bodi').order_by('-created_on')
+        context['matokeo']=matokeo=Matokeo.objects.filter(which='Bodi').order_by('-created_on')
 
         context['boardAll']=BoardVote.objects.aggregate(countT=Count('voter_id',distinct=True))['countT']
 
@@ -812,6 +813,8 @@ class MatokeoCommitte(LoginRequiredMixin,View):
     template_name='matokeo/committee_matokeo.html'
     def get(self,request,*args,**kwargs):
         context={}
+        context['matokeo'] = matokeo = Matokeo.objects.filter(which='Kamati').order_by('-created_on')
+
         context['committeeAll']=CommittteeVote.objects.aggregate(countT=Count('voter_id',distinct=True))['countT']
 
         context['committee']=CommitteeCandidate.objects.values(
@@ -836,6 +839,8 @@ class MatokeoChair(LoginRequiredMixin,View):
     template_name='matokeo/chair_matokeo.html'
     def get(self,request,*args,**kwargs):
         context={}
+        context['matokeo'] = matokeo = Matokeo.objects.filter(which='Mwenyekiti').order_by('-created_on')
+
         context['chairCount'] = ChairVote.objects.filter(chair_id__isnull=False).count()
         context['viseCount'] = ChairVote.objects.filter(vise_id__isnull=False).count()
 
@@ -852,13 +857,13 @@ class FlushButton(LoginRequiredMixin,View):
     redirect_field_name = 'next'
     template_name='dashboard/dashboard.html'
     def get(self,request,*args,**kwargs):
-        """
+
         BoardVote.objects.all().delete()
         ChairCandidate.objects.all().delete()
         CommitteeCandidate.objects.all().delete()
         BoardCandidate.objects.all().delete()
         ViseCandidate.objects.all().delete()
-        """
+
         BoardVote.objects.all().delete()
         ChairVote.objects.all().delete()
         CommittteeVote.objects.all().delete()
@@ -868,6 +873,21 @@ class FlushButton(LoginRequiredMixin,View):
           User.objects.filter(id=v.user_id).delete()
         Voter.objects.all().delete()
 
+
+        return redirect(reverse('dashboard'))
+
+class FlushButtonBodiVoti(LoginRequiredMixin,View):
+    login_url = reverse_lazy('login_user')
+    redirect_field_name = 'next'
+    template_name='dashboard/dashboard.html'
+    def get(self,request,*args,**kwargs):
+
+        BoardVote.objects.all().delete()
+        ChairCandidate.objects.all().delete()
+        CommitteeCandidate.objects.all().delete()
+        BoardCandidate.objects.all().delete()
+
+        BoardVote.objects.all().delete()
 
         return redirect(reverse('dashboard'))
 
@@ -932,6 +952,18 @@ class Settings(LoginRequiredMixin,View):
         pub=Publishing.objects.first()
         return render(request,self.template_name,{'li':pub})
 
+class SetAttendanceTimeUpdate(LoginRequiredMixin,UpdateView):
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    model = Matokeo
+    context_object_name = 'form'
+    form_class=Attendance_Setting
+    template_name = 'publishing/set_time_attendance.html'
+    success_url=reverse_lazy('settings')
+    def get_context_data(self, **kwargs):
+        kwargs['header']='SET TIME FOR ATTENDANCE'
+        return super().get_context_data(**kwargs)
+
 class TangazoMatokeoYaBodi(LoginRequiredMixin,CreateView):
     redirect_field_name = 'next'
     login_url = reverse_lazy('login_user')
@@ -976,3 +1008,114 @@ class TangazoMatokeoYaBodiDelete(LoginRequiredMixin,View):
     def get(self,*args, **kwargs):
         matok=Matokeo.objects.filter(id=self.kwargs['pk']).delete()
         return redirect(reverse('matokeo_bodi'))
+
+class PublishBodiMatokeo(LoginRequiredMixin,View):
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    model = Matokeo
+    context_object_name = 'form'
+
+    def get(self,*args, **kwargs):
+        matok=Matokeo.objects.filter(id=self.kwargs['pk']).first()
+        if matok:
+            if not matok.is_published:
+                matok.is_published=True
+            else:
+                matok.is_published = False
+            matok.save()
+
+
+        return redirect(reverse('dashboard'))
+
+####TANGAZA KAMATI
+class TangazoMatokeoYaKamati(LoginRequiredMixin,CreateView):
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    model = Matokeo
+    context_object_name = 'form'
+    form_class=ChapishaMatokeoKamatiForm
+    template_name = 'matokeo/tangaza_kamati.html'
+    def get_context_data(self, **kwargs):
+        kwargs['header']='Tangaza Matokeo Kamati'
+        return super().get_context_data(**kwargs)
+
+    def post(self,request, *args,**kwargs ):
+
+        form = self.form_class(request.POST,request.FILES)
+        if form.is_valid():
+            form1=form.save(commit=False)
+            form1.which='Kamati'
+            form1.save()
+            messages.success(request, 'Umefanikiwa! kutanagaza matokeo ya kamati')
+            return redirect('matokeo_kamati')
+        else:
+            return render(request,self.template_name,{'form':form,'header':''})
+
+class TangazoMatokeoYaKamatiUpdate(LoginRequiredMixin,UpdateView):
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    model = Matokeo
+    context_object_name = 'form'
+    form_class=ChapishaMatokeoKamatiForm
+    template_name = 'matokeo/tangaza_kamati.html'
+    success_url=reverse_lazy('matokeo_kamati')
+    def get_context_data(self, **kwargs):
+        kwargs['header']='Tangaza Kamati'
+        return super().get_context_data(**kwargs)
+
+class TangazoMatokeoYaKamatiDelete(LoginRequiredMixin,View):
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    model = Matokeo
+    context_object_name = 'form'
+
+    def get(self,*args, **kwargs):
+        matok=Matokeo.objects.filter(id=self.kwargs['pk']).delete()
+        return redirect(reverse('matokeo_kamati'))
+
+#######TANGAZA MWENYEKITI
+class TangazoMatokeoYaMwenyekiti(LoginRequiredMixin,CreateView):
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    model = Matokeo
+    context_object_name = 'form'
+    form_class=ChapishaMatokeoMKitiForm
+    template_name = 'matokeo/tangaza_mwenyekiti.html'
+    def get_context_data(self, **kwargs):
+        kwargs['header']='Tangaza Matokeo Mwenyekiti'
+        return super().get_context_data(**kwargs)
+
+    def post(self,request, *args,**kwargs ):
+
+        form = self.form_class(request.POST,request.FILES)
+        if form.is_valid():
+            form1=form.save(commit=False)
+            form1.which='Mwenyekiti'
+            form1.save()
+            messages.success(request, 'Umefanikiwa! kutanagaza matokeo ya mwenyekiti')
+            return redirect('matokeo_chair')
+        else:
+            return render(request,self.template_name,{'form':form,'header':''})
+class TangazoMatokeoYaMwenyekitiUpdate(LoginRequiredMixin,UpdateView):
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    model = Matokeo
+    context_object_name = 'form'
+    form_class=ChapishaMatokeoMKitiForm
+    template_name = 'matokeo/tangaza_mwenyekiti.html'
+    success_url=reverse_lazy('matokeo_mwenyekiti')
+    def get_context_data(self, **kwargs):
+        kwargs['header']='Tangaza Mwenyekiti'
+        return super().get_context_data(**kwargs)
+
+class TangazoMatokeoYaMwenyekitiDelete(LoginRequiredMixin,View):
+    redirect_field_name = 'next'
+    login_url = reverse_lazy('login_user')
+    model = Matokeo
+    context_object_name = 'form'
+
+    def get(self,*args, **kwargs):
+        matok=Matokeo.objects.filter(id=self.kwargs['pk']).delete()
+        return redirect(reverse('matokeo_mwenyekiti'))
+
+

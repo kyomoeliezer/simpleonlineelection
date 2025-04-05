@@ -82,6 +82,7 @@
                                         <a class="btn btn-outline-primary" target="_blank" href="{{mt.bodi_file.url}}">ANGALIA</a> <br/><br/>
                                       {%else  %}<label class="badge badge-secondary"></label>
                                         {% endif %}</b>  <br/>
+                                        <a class="btn btn-outline-warning" href="javascript:;" onclick="modal_common('{% url 'publish_bodi' pk=mt.id %}');">{% if not mt.is_published %} Publish {% else %} UnPublish {% endif %} </a> <br/><br/>
                                        <a class="btn btn-primary" href="{% url 'tangaza_bodi_update' pk=mt.id %}">rekebishe</a> <br/><br/>
                                       <a class="btn btn-danger" href="{% url 'tangaza_bodi_delete' pk=mt.id %}">delete</a> </th>
                                   </tr>

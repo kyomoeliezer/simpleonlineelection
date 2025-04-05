@@ -49,12 +49,18 @@ urlpatterns=[
     re_path(r'^cpubchair', PublishUnPublishChairView.as_view(), name="pub_chair"),
     re_path(r'^publishing/detail', Settings.as_view(), name="settings"),
     re_path(r'^jaza-matokeo', TangazoMatokeoYaBodi.as_view(), name="tangaza_bodi"),
+    re_path(r'^(?P<pk>[0-9]+)/publish-bodi', PublishBodiMatokeo.as_view(), name="publish_bodi"),
     re_path(r'^(?P<pk>[0-9]+)/update-jaza-matokeo', TangazoMatokeoYaBodiUpdate.as_view(), name="tangaza_bodi_update"),
     re_path(r'^(?P<pk>[0-9]+)/delete-jaza-matokeo', TangazoMatokeoYaBodiDelete.as_view(), name="tangaza_bodi_delete"),
 
+    re_path(r'^kamati-jaza-matokeo', TangazoMatokeoYaKamati.as_view(), name="tangaza_kamati"),
+    re_path(r'^(?P<pk>[0-9]+)/kamati-update', TangazoMatokeoYaKamatiUpdate.as_view(), name="tangaza_kamati_update"),
+    re_path(r'^(?P<pk>[0-9]+)/kamati-delete-matokeo', TangazoMatokeoYaKamatiDelete.as_view(), name="tangaza_kamati_delete"),
 
-
-
+    re_path(r'^mwenyekiti-jaza-matokeo', TangazoMatokeoYaMwenyekiti.as_view(), name="tangaza_mwenyekiti"),
+    re_path(r'^(?P<pk>[0-9]+)/mwenyekiti-update', TangazoMatokeoYaMwenyekitiUpdate.as_view(), name="tangaza_mwenyekiti_update"),
+    re_path(r'^(?P<pk>[0-9]+)/mwenyekiti-delete-matokeo', TangazoMatokeoYaMwenyekitiDelete.as_view(),
+            name="tangaza_mwenyekiti_delete"),
 
     path("", Dashboard.as_view(), name="dashboard"),
 

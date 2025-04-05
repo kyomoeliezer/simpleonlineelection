@@ -14,6 +14,47 @@
                       <a href="{% url 'dashboard' %}" class="btn btn-primary float-left">BACK</a>
     </div>
 </div>
+<div class="col-md-12 grid-margin">
+   <div class="card">
+       <div class="card-header">
+         <div class="float-left">
+        {% if matokeo.count > 0 %}  <a href="{% url 'tangaza_mwenyekiti' %}" class="btn btn-primary float-left">TANGAZA TENA</a>{% else %} <a href="{% url 'tangaza_mwenyekiti' %}" class="btn btn-info float-left">TANGAZA </a> {% endif %}
+        </div>
+
+         <br/>
+         <br/>
+
+           <div class="card-body">
+            <div class="table-responsive">
+             <table class="table tbl1">
+                                <thead>
+                                {% for mt in matokeo %}
+                                  <tr>
+
+                                    <th style="width:20%;">{{mt.created_on}}<br/> <br/>{{mt.title}}<br/><br/>
+                                     {% if mt.kamati_file %}
+                                        <a class="btn btn-outline-primary" target="_blank" href="{{mt.kamati_file.url}}">ANGALIA</a> <br/><br/>
+                                      {%else  %}<label class="badge badge-secondary"></label>
+                                        {% endif %}</b>  <br/>
+                                        <a class="btn btn-outline-warning" href="javascript:;" onclick="modal_common('{% url 'publish_bodi' pk=mt.id %}');">{% if not mt.is_published %} TANGAZA {% else %} USITANGAZE {% endif %} </a> <br/><br/>
+                                       <a class="btn btn-primary" href="{% url 'tangaza_kamati_update' pk=mt.id %}">rekebishe</a> <br/><br/>
+                                      <a class="btn btn-danger" href="{% url 'tangaza_kamati_delete' pk=mt.id %}">delete</a> </th>
+                                  </tr>
+                                <hr>
+
+                                {% endfor %}
+                                </thead>
+
+                              </table>
+           </div>
+
+        </div>
+
+      </div>
+   </div>
+</div>
+
+
 
             <div class="col-md-6 grid-margin">
                     <div class="card">

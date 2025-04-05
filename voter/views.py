@@ -172,9 +172,16 @@ class VotedBoardVoteView(LoginRequiredMixin,ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context['voter'] = voter=Voter.objects.filter(user_id=self.request.user.id).first()
-        context['board'] = BoardVote.objects.filter(voter_id=voter.id).all().order_by('candidate__candidate_name')
+        context['voter'] = voter = Voter.objects.filter(user_id=self.request.user.id).first()
+        context['board'] = board = BoardVote.objects.filter(voter_id=voter.id).all().order_by(
+            'candidate__candidate_name')
+
+        if board.count():
+            context['umeshapiga']=True
+
+
         context['voter'] = Voter.objects.filter(user_id=self.request.user.id).first()
+
         return context
 
 
@@ -265,7 +272,11 @@ class VotedCommitteView(LoginRequiredMixin,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context['voter'] = voter=Voter.objects.filter(user_id=self.request.user.id).first()
-        context['board'] = CommittteeVote.objects.filter(voter_id=voter.id).all().order_by('candidate__candidate_name')
+        context['board'] = board = CommittteeVote.objects.filter(voter_id=voter.id).all().order_by('candidate__candidate_name')
+
+        if board.count():
+            context['umeshapiga'] = True
+
         context['voter'] = Voter.objects.filter(user_id=self.request.user.id).first()
         return context
 
@@ -336,7 +347,10 @@ class VotedChairView(LoginRequiredMixin,ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context['voter'] = voter=Voter.objects.filter(user_id=self.request.user.id).first()
-        context['chair'] = ChairVote.objects.filter(voter_id=voter.id).all()
+        context['chair'] = chair = ChairVote.objects.filter(voter_id=voter.id).all()
+        if chair.count():
+            context['umeshapiga'] = True
+
         context['voter'] = Voter.objects.filter(user_id=self.request.user.id).first()
         return context
 
@@ -353,24 +367,25 @@ class MatokeoVBoard(LoginRequiredMixin,View):
         context={}
 
         context['pub'] = Publishing.objects.first()
-        context['matokeo'] = Matokeo.objects.filter(is_published=True,which='Bodi').order_by('-created_on')
+        context['matokeo'] = matokeo = Matokeo.objects.filter(is_published=True,which='Bodi').order_by('-created_on')
+        if matokeo.count() > 0:
 
-        context['boardAll']=BoardVote.objects.aggregate(countT=Count('voter_id',distinct=True))['countT']
+            context['boardAll']=BoardVote.objects.aggregate(countT=Count('voter_id',distinct=True))['countT']
 
-        context['board']=BoardCandidate.objects.values(
-            'memberNo',
-            candidateName=F('candidate_name'),
+            context['board']=BoardCandidate.objects.values(
+                'memberNo',
+                candidateName=F('candidate_name'),
 
 
-        ).annotate(
-            votes=Sum(
-            Case(
-                When(Q(boardvote__isnull=False), then=1),
-                default=Value(0),
-                output_field=IntegerField(),
-            )
-        ),
-        ).order_by('-votes','candidateName')
+            ).annotate(
+                votes=Sum(
+                Case(
+                    When(Q(boardvote__isnull=False), then=1),
+                    default=Value(0),
+                    output_field=IntegerField(),
+                )
+            ),
+            ).order_by('-votes','candidateName')
 
         return render(request,self.template_name,context)
 
@@ -405,11 +420,14 @@ class MatokeoVChair(LoginRequiredMixin,View):
     template_name='matokeov/chair_matokeo.html'
     def get(self,request,*args,**kwargs):
         context = {}
-        context['chairCount'] = ChairVote.objects.filter(chair_id__isnull=False).count()
-        context['viseCount'] = ChairVote.objects.filter(vise_id__isnull=False).count()
+        context['matokeo'] = matokeo = Matokeo.objects.filter(is_published=True, which='Mwenyekiti').order_by('-created_on')
+        if matokeo.count() > 0:
 
-        context['chairs'] = ChairCandidate.objects.all()
-        context['vise'] = ViseCandidate.objects.all()
+            context['chairCount'] = ChairVote.objects.filter(chair_id__isnull=False).count()
+            context['viseCount'] = ChairVote.objects.filter(vise_id__isnull=False).count()
+
+            context['chairs'] = ChairCandidate.objects.all()
+            context['vise'] = ViseCandidate.objects.all()
         return render(request, self.template_name, context)
 
 class AttendNow(LoginRequiredMixin,View):
