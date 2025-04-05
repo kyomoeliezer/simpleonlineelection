@@ -15,8 +15,17 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import *
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from candidato.models import Publishing
 
 from voter.forms import *
+def voting_opened_for():
+    pub = Publishing.objects.first()
+    if pub.startVoting:
+        return pub.open_voting_for
+    else:
+        return ' bb'
+
+
 
 
 def no_check_duplicate_choice(choice,request,no):
@@ -85,6 +94,12 @@ class BoardVoteView(LoginRequiredMixin,CreateView):
         form = self.form_class(request.POST)
 
         if form.is_valid():
+            dataOg=voting_opened_for()
+            if not 'Bodi' in  dataOg:
+                messages.warning(request,'Subiri Muda wa kura bado/umeisha, sikiliza maelekezo ya mkutano/mwenyekiti wa uchaguzi')
+
+                return redirect(reverse('voting'))
+
 
             form1 = form.save(commit=False)
             bod1=request.POST.get('bodi1')
@@ -208,6 +223,11 @@ class NewCommitteeVotingView(LoginRequiredMixin,CreateView):
         form = self.form_class(request.POST)
 
         if form.is_valid():
+            dataOg = voting_opened_for()
+            if not 'Kamati' in dataOg:
+                messages.warning(request,'Subiri Muda wa kura bado/umeisha, sikiliza maelekezo ya mkutano/mwenyekiti wa uchaguzi')
+
+                return redirect(reverse('voting'))
 
             form1 = form.save(commit=False)
             bod1=request.POST.get('bodi1')
@@ -292,6 +312,8 @@ class NewChairViseVotingView(LoginRequiredMixin,CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
+        dataOg = voting_opened_for()
+
         context['form']=self.form_class
         context['header']=self.header
         context['voter'] = Voter.objects.filter(user_id=self.request.user.id).first()
@@ -303,6 +325,10 @@ class NewChairViseVotingView(LoginRequiredMixin,CreateView):
         form = self.form_class(request.POST)
 
         if form.is_valid():
+            dataOg = voting_opened_for()
+            if not 'Mwenyekiti' in dataOg:
+                messages.warning(request,'Subiri Muda wa kura bado/umeisha, sikiliza maelekezo ya mkutano/mwenyekiti wa uchaguzi')
+                return redirect(reverse('voting'))
 
             form1 = form.save(commit=False)
             chair=request.POST.get('chair')

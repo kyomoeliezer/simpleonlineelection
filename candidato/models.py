@@ -31,6 +31,7 @@ class BoardCandidate(BaseDB):
     candidate_name = models.CharField(max_length=300,verbose_name='Candidate Name')
     is_done = models.BooleanField(default=False)
     noVotes = models.IntegerField(default=0)
+
     def __str__(self):
         return (str(self.memberNo)+' '+self.candidate_name).upper()
 
