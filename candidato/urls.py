@@ -64,7 +64,7 @@ urlpatterns=[
 
     re_path(r'^mwenyekiti-jaza-matokeo', TangazoMatokeoYaMwenyekiti.as_view(), name="tangaza_mwenyekiti"),
     re_path(r'^(?P<pk>[0-9]+)/mwenyekiti-update', TangazoMatokeoYaMwenyekitiUpdate.as_view(), name="tangaza_mwenyekiti_update"),
-    re_path(r'^(?P<pk>[0-9]+)/mwenyekiti-delete-matokeo', TangazoMatokeoYaMwenyekitiDelete.as_view(),
+    re_path(r'^(?P<pk>[0-9]+)/mwenyekiti-delete-mattock', TangazoMatokeoYaMwenyekitiDelete.as_view(),
             name="tangaza_mwenyekiti_delete"),
     path("kwaniaba", DoneBodVotKwaniaba.as_view(), name="niaba"),
 
