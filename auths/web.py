@@ -709,7 +709,7 @@ class LoginCode(View):
     def get(self, request):
         logout(request)
         form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name_otp, {'form': form})
     #process form data
 
     def post(self, request):
@@ -755,7 +755,7 @@ class LoginCode(View):
                 message='Namba('+str(code)+') either hii haijasajiliwa au umechelewa kuingia kwenye mkutano'
                 return render(request, self.template_name, {'form': form,'error':message})
 
-        return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name_otp, {'form': form})
 
 
 @method_decorator(csrf_exempt,name='dispatch')
