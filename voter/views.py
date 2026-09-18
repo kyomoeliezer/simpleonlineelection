@@ -68,9 +68,9 @@ class Votings(LoginRequiredMixin,View):
                 voter.is_on_meetin_option=False
                 voter.save()
                 return redirect(reverse('attend_a_meeting_view',kwargs={'pk':voter.id}))
-        context['board']=BoardVote.objects.filter(voter_id=voter.id).exists()
-        context['committee'] = CommittteeVote.objects.filter(voter_id=voter.id).exists()
-        context['chair'] = ChairVote.objects.filter(voter_id=voter.id).exists()
+            context['board']=BoardVote.objects.filter(voter_id=voter.id).exists()
+            context['committee'] = CommittteeVote.objects.filter(voter_id=voter.id).exists()
+            context['chair'] = ChairVote.objects.filter(voter_id=voter.id).exists()
         lists=SmsSent.objects.all().order_by('-created_on')
         return render(request,self.template_name,context)
 
