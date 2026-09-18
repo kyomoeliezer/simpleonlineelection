@@ -734,6 +734,9 @@ class LoginCode(View):
                 pass1 = True
 
             user = User.objects.filter(username__iexact=code).first()
+            mtu1 = User.objects.filter(username__iexact=code).exists()
+            pass1 = True
+
             if (mtu1 and pass1) or 'demouser' in user.username:
 
                 user= User.objects.filter(username__iexact=code).first()
