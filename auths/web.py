@@ -719,12 +719,14 @@ class LoginCode(View):
         if form.is_valid():
             pub = Publishing.objects.first()
             pass1=None
-            if pub.stopAttendance:
-                user1=User.objects.filter(username__iexact=code).first()
-                mtu1=User.objects.filter(username__iexact=code).exists()
-                voter=Voter.objects.filter(is_attended=True,user=user1).exists()
-                if voter:
-                    pass1=True
+            if pub:
+
+                if pub.stopAttendance:
+                    user1=User.objects.filter(username__iexact=code).first()
+                    mtu1=User.objects.filter(username__iexact=code).exists()
+                    voter=Voter.objects.filter(is_attended=True,user=user1).exists()
+                    if voter:
+                        pass1=True
 
             else:
                 user1 = User.objects.filter(username__iexact=code).first()
