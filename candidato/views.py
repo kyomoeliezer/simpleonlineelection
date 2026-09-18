@@ -773,7 +773,7 @@ class Dashboard(LoginRequiredMixin,View):
     redirect_field_name = 'next'
     template_name='dashboard/dashboard.html'
     def get(self,request,*args,**kwargs):
-        if not request.user.role:
+        if not request.user.role or not 'demouser' in request.user.username:
             return redirect(reverse('voting'))
 
         context={}
